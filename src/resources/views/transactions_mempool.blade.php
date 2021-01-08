@@ -51,7 +51,7 @@
           <tbody>
             @foreach ($transactions as $transaction)
               <tr>
-                <th scope="row"><a href="{{ route('transactions', $transaction->hash) }}">{{ substr($transaction->hash, 0, 10) }}..</a></th>
+                <th scope="row"><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 20) }}..</a></th>
                 <td>{{ $transaction->value }} LBC</td>
                 <td>{{ $transaction->input_count }}</td>
                 <td>{{ $transaction->output_count }}</td>

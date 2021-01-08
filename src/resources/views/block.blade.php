@@ -14,7 +14,7 @@
 </style>
 @endpush
 
-@section('icon', 'pe-7s-star')
+@section('icon', 'pe-7s-box2')
 @section('title', 'Block #'.$block->height)
 @section('header', 'Block #'.$block->height)
 @section('description', 'Block Hash '.$block->small_hash)
@@ -84,24 +84,38 @@
                 {{ $block->hash }}
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">Chainwork</div>
-                {{ $block->chainwork }}
+            <div class="collapse" id="collapsePanel">
+                <div class="row">
+                    <div class="col-lg-12 mb-2">
+                        <div class="text-primary">Chainwork</div>
+                        {{ $block->chainwork }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 mb-2">
+                        <div class="text-primary">Merkle Root</div>
+                        {{ $block->merkle_root }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 mb-2">
+                        <div class="text-primary">Name Claim Root</div>
+                        {{ $block->name_claim_root }}
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">Merkle Root</div>
-                {{ $block->merkle_root }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">Name Claim Root</div>
-                {{ $block->name_claim_root }}
-            </div>
-          </div>
+            <span>
+                <a class="d-block collapsed text-decoration-none" id="collapseLink" data-toggle="collapse" href="#collapsePanel" role="button" aria-expanded="false" aria-controls="collapse">
+                    <span class="d-flex">
+                        Click to see&nbsp;
+                        <span class="card-arrow-more">more</span>
+                        <span class="card-arrow-less">less</span>
+                        <span class="card-btn-arrow ml-2">
+                            <span class="fas fa-arrow-up small"></span>
+                        </span>
+                    </span>
+                </a>
+            </span>
         </div>
     </div>
   </div>
@@ -123,7 +137,7 @@
                 <tbody>
                   @foreach ($transactions as $transaction)
                     <tr>
-                      <td scope="row"><a href="{{ route('transactions', $transaction->hash) }}">{{ substr($transaction->hash, 0, 10) }}..</a></td>
+                      <td scope="row"><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 10) }}..</a></td>
                       <td>{{ $transaction->input_count }}</td>
                       <td>{{ $transaction->output_count }}</td>
                       <td>{{ $transaction->value }} LBC</td>

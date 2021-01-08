@@ -10644,3 +10644,23 @@ a.text-dark:focus {
   }
 }
 
+#collapseLink.collapsed .card-arrow-less {
+  display: none;
+}
+
+#collapseLink.collapsed .card-arrow-more {
+  display: block;
+}
+
+#collapseLink.collapsed .card-btn-arrow {
+  transform: rotate(-180deg);
+}
+
+#collapseLink .card-arrow-less {
+  display: block;
+}
+
+#collapseLink .card-arrow-more {
+  display: none;
+}
+

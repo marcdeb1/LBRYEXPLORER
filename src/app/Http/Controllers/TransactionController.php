@@ -14,13 +14,14 @@ use App\Address;
 class TransactionController extends Controller
 {
     public function getTransactions() {
-        $transactions = Transaction::select('id', 'hash', 'transaction_time', 'value', 'input_count', 'output_count', 'transaction_size')
+        $transactions = Transaction::select('id', 'hash', 'transaction_time', 'value', 'input_count', 'output_count', 'transaction_size', 'block_hash_id')
             ->where('block_hash_id', '<>', 'MEMPOOL')
-            ->orderBy('id', 'desc')
+            ->orderBy('transaction_time', 'desc')
             ->with(['inputs', 'outputs'])
             ->simplePaginate(25);
 
         $transactions->transform(function ($item, $key) {
+            $item->block_height = Block::where('hash', $item->block_hash_id)->value('height');
             $item->transaction_time = Carbon::createFromTimestamp($item->transaction_time)->format('d M Y  H:i:s');
             $item->transaction_size /= 1000;
 
@@ -69,13 +70,15 @@ class TransactionController extends Controller
 
                 // calculate transaction fee by inputs and outputs
                 $tx->fee = 0;
-                foreach($inputs as $input) {
-                    $tx->fee += $input->value;
+                if(!$tx->inputs[0]->is_coinbase) {
+                    foreach($inputs as $input) {
+                        $tx->fee += $input->value;
+                    }
+                    foreach($outputs as $output) {
+                        $tx->fee -= $output->value;
+                    }
+                    $tx->fee = sprintf("%.f", $tx->fee);
                 }
-                foreach($outputs as $output) {
-                    $tx->fee -= $output->value;
-                }
-                $tx->fee = sprintf("%.f", $tx->fee);
             }
 
 

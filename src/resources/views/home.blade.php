@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-md-6 col-xl-4">
         <div class="card mb-3 widget-content bg-plum-plate">
-            <div class="widget-content-wrapper text-white">
+            <div class="widget-content-wrapper text-white w-100">
                 <div class="widget-content-left">
                     <div class="widget-heading">Block Height</div>
                 </div>
@@ -35,7 +35,7 @@
     </div>
     <div class="col-md-6 col-xl-4">
         <div class="card mb-3 widget-content bg-midnight-bloom">
-            <div class="widget-content-wrapper text-white">
+            <div class="widget-content-wrapper text-white w-100">
                 <div class="widget-content-left">
                     <div class="widget-heading">Difficulty</div>
                 </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="col-md-6 col-xl-4">
         <div class="card mb-3 widget-content bg-premium-dark">
-            <div class="widget-content-wrapper text-white">
+            <div class="widget-content-wrapper text-white w-100">
                 <div class="widget-content-left">
                     <div class="widget-heading">Network Hashrate</div>
                 </div>
@@ -110,7 +110,7 @@
                 <tbody>
                   @foreach ($transactions as $transaction)
                     <tr>
-                      <td scope="row"><a href="{{ route('transactions', $transaction->hash) }}">{{ substr($transaction->hash, 0, 7) }}..</a></td>
+                      <td scope="row"><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 7) }}..</a></td>
                       <td>{{ $transaction->age }} minutes ago</td>
                       <td>{{ $transaction->value }} LBC</td>
                       <td>{{ $transaction->fee }} LBC</td>

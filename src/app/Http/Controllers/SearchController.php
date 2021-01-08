@@ -32,7 +32,7 @@ class SearchController extends Controller
             return redirect()->route('block', (int) $input->height);
           } catch (ModelNotFoundException $e) {
             $input = Transaction::where('hash', $input)->firstOrFail();
-            return redirect()->route('transactions', $input->hash);
+            return redirect()->route('transaction', $input->hash);
           }
           break;
 

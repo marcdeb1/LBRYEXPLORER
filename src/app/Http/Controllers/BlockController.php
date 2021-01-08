@@ -37,7 +37,7 @@ class BlockController extends Controller
   }
 
     public function getBlock($height = null) {
-        if($height) {  // requested specific block num
+        if($height) {
             $block = Block::where('height', $height)->firstOrFail();
             $transactions = $block->transactions()->get(['hash', 'value', 'input_count', 'output_count', 'transaction_size']);
 

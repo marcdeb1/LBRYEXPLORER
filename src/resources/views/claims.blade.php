@@ -52,7 +52,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($blocks as $block)
+            @foreach ($claims as $claime)
               <tr>
                 <th scope="row"><a href="{{ route('block', $block->height) }}">{{ $block->height }}</a></th>
                 <td>{{ $block->block_time }}</td>

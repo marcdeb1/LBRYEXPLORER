@@ -125,7 +125,12 @@
   <div class="col-lg-12">
     <div class="main-card mb-3 card">
       <div class="card-body table-wrapper-scroll-y my-custom-scrollbar">
-        <h5 class="card-title">Transactions</h5>
+          <div class="table-header d-flex justify-content-between mb-2">
+              <div class="card-title">Transactions</div>
+              <div class="pagination">
+                  {{ $transactions->links() }}
+              </div>
+          </div>
         <table class="mb-0 table table-hover table-striped">
           <thead>
             <tr>
@@ -142,25 +147,20 @@
             @foreach ($transactions as $transaction)
               <tr>
                 <th scope="row"><a href="{{ route('block', $transaction->height) }}">{{ $transaction->height }}</a></th>
-                <td><a href="{{ route('transactions', $transaction->hash) }}">{{ substr($transaction->hash, 0, 15) }}..</a></td>
+                <td><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 15) }}..</a></td>
                 <td>{{ $transaction->transaction_time }} UTC</td>
                 <td>{{ $transaction->input_count }}</td>
                 <td>{{ $transaction->output_count }}</td>
                 <td>{{ $transaction->transaction_size }} kB</td>
-                @if ($transaction->credit_amount > 0)
-                  <td class="text-success font-weight-bold">+{{ $transaction->credit_amount }} LBC</td>
+                @if ($transaction->transaction_amount > 0)
+                  <td class="text-success font-weight-bold">{{ $transaction->transaction_amount }} LBC</td>
                 @else
-                  <td class="text-danger font-weight-bold">-{{ $transaction->debit_amount }} LBC</td>
+                  <td class="text-primary font-weight-bold">{{ $transaction->transaction_amount }} LBC</td>
                 @endif
               </tr>
             @endforeach
           </tbody>
         </table>
-      </div>
-      <div class="card-footer table-wrapper-scroll-y my-custom-scrollbar">
-          <div class="pagination center">
-            {{ $transactions->links() }}
-          </div>
       </div>
     </div>
   </div>

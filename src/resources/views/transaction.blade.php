@@ -60,7 +60,7 @@
                 {{ $transaction->value }} LBC
             </div>
           </div>
-          @if (($transaction->block_hash_id != 'MEMPOOL') && (!$inputs[0]->is_coinbase))
+          @if (($transaction->block_hash_id != 'MEMPOOL'))
           <div class="row">
             <div class="col-lg-12 mb-2">
               <div class="text-primary">
@@ -258,7 +258,7 @@
                 @else
                   <h5 class="card-title">{{ $input->value }} LBC</h5>
                   <p>
-                    from <a href="{{ route('address', $input->address) }}">{{ $input->address }}</a> <a href="{{ route('transactions', $input->prevout_hash) }}">(output)</a>
+                    from <a href="{{ route('address', $input->address) }}">{{ $input->address }}</a> <a href="{{ route('transaction', $input->prevout_hash) }}">(output)</a>
                   </p>
                 @endif
               </div>
@@ -302,7 +302,7 @@
                   @foreach ($output->address_list as $recipient_address)
                     <a href="{{ route('address', $recipient_address) }}">{{ $recipient_address }}</a>
                     @if ($output->is_spent)
-                      <a href="{{ route('transactions', $output->spent_hash) }}">(spent)</a>
+                      <a href="{{ route('transaction', $output->spent_hash) }}">(spent)</a>
                     @else
                       (unspent)
                     @endif

@@ -42,6 +42,7 @@
           <thead>
             <tr>
               <th>Hash</th>
+              <th>Block</th>
               <th>Timestamp</th>
               <th>Value</th>
               <th>Inputs</th>
@@ -53,7 +54,8 @@
           <tbody>
             @foreach ($transactions as $transaction)
               <tr>
-                <th scope="row"><a href="{{ route('transactions', $transaction->hash) }}">{{ substr($transaction->hash, 0, 10) }}..</a></th>
+                <th scope="row"><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 20) }}..</a></th>
+                <th scope="row"><a href="{{ route('block', $transaction->block_height) }}">{{ $transaction->block_height }}</a></th>
                 <td>{{ $transaction->transaction_time }}</td>
                 <td>{{ $transaction->value }} LBC</td>
                 <td>{{ $transaction->input_count }}</td>

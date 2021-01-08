@@ -23,7 +23,7 @@
     -->
     @stack('styles')
     <link href="{{ asset('css/main.css') }}" rel="stylesheet"> <!-- template import -->
-    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet">  laravel import -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!-- laravel import -->
 </head>
 <body>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
