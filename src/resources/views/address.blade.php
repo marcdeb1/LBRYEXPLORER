@@ -24,7 +24,8 @@
 @endpush
 
 @section('icon', 'pe-7s-wallet')
-@section('title', 'LBRY Address '.$address->address)
+@section('title', 'Address '.$address->address)
+@section('header', 'Address '.$address->address)
 
 @section('content')
 
@@ -140,7 +141,7 @@
           <tbody>
             @foreach ($transactions as $transaction)
               <tr>
-                <th scope="row"><a href="{{ route('blocks', $transaction->height) }}">{{ $transaction->height }}</a></th>
+                <th scope="row"><a href="{{ route('block', $transaction->height) }}">{{ $transaction->height }}</a></th>
                 <td><a href="{{ route('transactions', $transaction->hash) }}">{{ substr($transaction->hash, 0, 15) }}..</a></td>
                 <td>{{ $transaction->transaction_time }} UTC</td>
                 <td>{{ $transaction->input_count }}</td>

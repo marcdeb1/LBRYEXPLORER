@@ -11,30 +11,7 @@ use App\Transaction;
 class BlockController extends Controller
 {
 
-  public function getBlocks($height = null) {
-    if($height) {  // requested specific block num
-      $block = Block::where('height', $height)->firstOrFail();
-      $transactions = $block->transactions()->get(['hash', 'value', 'input_count', 'output_count', 'transaction_size']);
-
-      $block->small_hash = substr($block->hash, 0, 10).'...'.substr($block->hash, -10);
-
-      $block->block_size /= 1000;
-      $block->block_time = Carbon::createFromTimestamp($block->block_time)->format('d M Y  H:i:s');
-
-      $block->confirmations = Block::latest()->take(1)->value('height') - $block->height;
-
-      $transactions->transform(function ($item, $key) {
-          $item->transaction_size /= 1000;
-          return $item;
-      });
-
-      return view('block', [
-        'block' => $block,
-        'transactions' => $transactions
-      ]);
-
-    } // list blocks
-
+  public function getBlocks() {
     $blocks = Block::select('height', 'block_time', 'transaction_hashes', 'block_size', 'difficulty', 'nonce')->orderBy('id', 'desc')->simplePaginate(25);
 
     $previous_block_difficulty = 0;  // used to calculate difficulty variation from the previous and current block
@@ -54,11 +31,35 @@ class BlockController extends Controller
         return $item;
     });
 
-
     return view('blocks', [
       'blocks' => $blocks
     ]);
-
-
   }
+
+    public function getBlock($height = null) {
+        if($height) {  // requested specific block num
+            $block = Block::where('height', $height)->firstOrFail();
+            $transactions = $block->transactions()->get(['hash', 'value', 'input_count', 'output_count', 'transaction_size']);
+
+            $block->small_hash = substr($block->hash, 0, 10).'...'.substr($block->hash, -10);
+
+            $block->block_size /= 1000;
+            $block->block_time = Carbon::createFromTimestamp($block->block_time)->format('d M Y  H:i:s');
+
+            $block->confirmations = Block::latest()->take(1)->value('height') - $block->height;
+
+            $transactions->transform(function ($item, $key) {
+                $item->transaction_size /= 1000;
+                return $item;
+            });
+
+            return view('block', [
+                'block' => $block,
+                'transactions' => $transactions
+            ]);
+
+        } else {
+            return redirect('/blocks');
+        }
+    }
 }

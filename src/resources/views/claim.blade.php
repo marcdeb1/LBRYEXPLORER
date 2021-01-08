@@ -14,10 +14,10 @@
 </style>
 @endpush
 
-@section('icon', 'pe-7s-star')
-@section('title', 'Block #'.$block->height)
-@section('header', 'Block #'.$block->height)
-@section('description', 'Block Hash '.$block->small_hash)
+@section('icon', 'pe-7s-airplay')
+@section('title', 'Claim '.$claim->id)
+@section('header', 'Claim '.$claim->id)
+@section('description', $claim->hash)
 
 @section('content')
 <div class="row">

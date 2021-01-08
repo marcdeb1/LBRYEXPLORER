@@ -15,29 +15,17 @@
 @endpush
 
 @section('icon', 'pe-7s-rocket')
-@section('title', 'Welcome, this is the LBRY BlockExplorer')
+@section('title', 'Home')
+@section('title', 'Welcome, this is the LBRY Block Explorer')
 @section('description', 'LBRY is a secure, open, and community-run digital marketplace.')
 
 @section('content')
-<div class="container mb-4">
-  <form method="GET" action="/search">
-    @csrf
-    <div class="input-group">
-      <input name="q" type="text" class="form-control form-control-lg" placeholder="Search block / address / hash / claim name">
-        <div class="input-group-append">
-            <button class="btn btn-primary">Search</button>
-        </div>
-    </div>
-  </form>
-</div>
-
 <div class="row">
     <div class="col-md-6 col-xl-4">
         <div class="card mb-3 widget-content bg-plum-plate">
             <div class="widget-content-wrapper text-white">
                 <div class="widget-content-left">
                     <div class="widget-heading">Block Height</div>
-                    <div class="widget-subheading">Number of mined blocks</div>
                 </div>
                 <div class="widget-content-right">
                     <div class="widget-numbers text-white"><span>{{ $blocks[0]->height }}</span></div>
@@ -50,7 +38,6 @@
             <div class="widget-content-wrapper text-white">
                 <div class="widget-content-left">
                     <div class="widget-heading">Difficulty</div>
-                    <div class="widget-subheading">To find a hash below a given target</div>
                 </div>
                 <div class="widget-content-right">
                     <div class="widget-numbers text-white"><span>{{ number_format($blocks[0]->difficulty) }}</span></div>
@@ -63,7 +50,6 @@
             <div class="widget-content-wrapper text-white">
                 <div class="widget-content-left">
                     <div class="widget-heading">Network Hashrate</div>
-                    <div class="widget-subheading">*what hashrate is*</div>
                 </div>
                 <div class="widget-content-right">
                     <div class="widget-numbers text-white"><span>392766.87 GH/s</span></div>
@@ -94,7 +80,7 @@
                 <tbody>
                   @foreach ($blocks as $block)
                     <tr>
-                      <td scope="row"><a href="{{ route('blocks', $block->height) }}">{{ $block->height }}</a></td>
+                      <td scope="row"><a href="{{ route('block', $block->height) }}">{{ $block->height }}</a></td>
                       <td>{{ $block->age }} minutes ago</td>
                       <td>{{ $block->transactions }} txs</td>
                       <td>{{ $block->block_size }} kB</td>

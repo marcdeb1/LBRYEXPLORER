@@ -23,9 +23,9 @@
 </style>
 @endpush
 
-@section('icon', 'pe-7s-box2')
-@section('title', 'Blocks')
-@section('header', 'Blocks')
+@section('icon', 'pe-7s-star')
+@section('title', 'Claims')
+@section('header', 'Claims')
 
 @section('content')
 <div class="row">
@@ -33,9 +33,9 @@
     <div class="main-card mb-3 card">
       <div class="card-body table-wrapper-scroll-y my-custom-scrollbar">
           <div class="table-header d-flex justify-content-between mb-2">
-              <div class="card-title">Mined Blocks</div>
+              <div class="card-title">Claims</div>
               <div class="pagination">
-                  {{ $blocks->links() }}
+                  {{ $claims->links() }}
               </div>
           </div>
         <table class="mb-0 table table-hover table-striped">

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>LBRY BlockExplorer - @yield('title')</title>
+    <title>@yield('title') | LBRY Explorer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="Check LBRY.com">
     <meta name="msapplication-tap-highlight" content="no">
@@ -29,7 +29,11 @@
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header header-shadow">
             <div class="app-header__logo">
-                <div class="logo-src font-weight-bold">L B R Y E X P L O R E R</div>
+                <div class="logo-src font-weight-bold">
+                    <a href="{{ route('home') }}" class="d-flex text-reset text-decoration-none">
+                        <img src="{{ asset('images/logo.svg') }}" title="LBRY Explorer" height="25" width="25" class="pr-1"/> LBRY Explorer
+                    </a>
+                </div>
                 <div class="header__pane ml-auto">
                     <div>
                         <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
@@ -50,7 +54,19 @@
                 </div>
             </div>
             <div class="app-header__menu"></div>
-            <div class="app-header__content"></div>
+            <div class="app-header__content">
+                <div class="d-flex col-md-6 px-0">
+                    <form method="GET" action="/search" class="w-100">
+                        @csrf
+                        <div class="input-group">
+                            <input name="q" type="text" class="form-control form-control-sm" placeholder="Search by Address / Transaction hash / Block / Claim ID">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary btn-sm"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="app-main">
                 <div class="app-sidebar sidebar-shadow">
@@ -87,27 +103,12 @@
                     <div class="scrollbar-sidebar">
                         <div class="app-sidebar__inner">
                             <ul class="vertical-nav-menu">
-                                <li class="app-sidebar__heading"></li>
-                                <li>
-                                    @if(Route::currentRouteName() === 'home')
-                                      <a href="/" class="mm-active">
-                                    @else
-                                      <a href="/">
-                                    @endif
-                                        <i class="metismenu-icon pe-7s-rocket"></i>
-                                        Home
-                                    </a>
-                                </li>
                                 <li class="app-sidebar__heading">Blockchain</li>
                                 <li>
-                                    @if(Route::currentRouteName() === 'blocks')
-                                      <a href="{{ route('blocks') }}" class="mm-active">
-                                    @else
-                                      <a href="{{ route('blocks') }}">
-                                    @endif
-                                        <i class="metismenu-icon pe-7s-star"></i>
-                                        Blocks
-                                    </a>
+                                  <a href="{{ route('blocks') }}" class="{{ Route::currentRouteName() === 'blocks' ? 'mm-active' : ''  }}">
+                                    <i class="metismenu-icon pe-7s-box2"></i>
+                                    Blocks
+                                  </a>
                                 </li>
                                 <li>
                                     <a href="#">
@@ -117,22 +118,14 @@
                                     </a>
                                     <ul>
                                       <li>
-                                          @if(Route::currentRouteName() === 'transactions')
-                                            <a href="{{ route('transactions') }}" class="mm-active">
-                                          @else
-                                            <a href="{{ route('transactions') }}">
-                                          @endif
-                                              <i class="metismenu-icon"></i>
-                                              Mined
-                                          </a>
+                                        <a href="{{ route('transactions') }}" class="{{ Route::currentRouteName() === 'transactions' ? 'mm-active' : ''  }}">
+                                          <i class="metismenu-icon"></i>
+                                          Mined
+                                        </a>
                                       </li>
                                       <li>
-                                          @if(Route::currentRouteName() === 'transactions_mempool')
-                                            <a href="{{ route('transactions_mempool') }}" class="mm-active">
-                                          @else
-                                            <a href="{{ route('transactions_mempool') }}">
-                                          @endif
-                                              <i class="metismenu-icon"></i>
+                                        <a href="{{ route('transactions_mempool') }}" class="{{ Route::currentRouteName() === 'transactions_mempool' ? 'mm-active' : ''  }}">
+                                            <i class="metismenu-icon"></i>
                                           Mempool
                                         </a>
                                       </li>
@@ -140,26 +133,10 @@
                                 </li>
                                 <li class="app-sidebar__heading">Claimtrie</li>
                                 <li>
-                                    @if(Route::currentRouteName() === 'claims')
-                                      <a href="{{ route('claims') }}" class="mm-active" onclick="return false;">
-                                    @else
-                                      <a href="{{ route('claims') }}" onclick="return false;">
-                                    @endif
-                                        <i class="metismenu-icon pe-7s-airplay"></i>
-                                        Claims
-                                    </a>
-                                </li>
-                                <li class="app-sidebar__heading">Search</li>
-                                <li>
-                                  <form method="GET" action="/search">
-                                    @csrf
-                                    <div class="input-group">
-                                      <input name="q" type="text" class="form-control form-control-sm" placeholder="block/address/hash/claims">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-primary btn-sm"><i class="fa fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                  </form>
+                                  <a href="{{ route('claims') }}" class="{{ Route::currentRouteName() === 'claims' ? 'mm-active' : ''  }}" onclick="return false;">
+                                    <i class="metismenu-icon pe-7s-airplay"></i>
+                                    Claims
+                                  </a>
                                 </li>
                             </ul>
                         </div>
@@ -174,21 +151,11 @@
                                         <i class="@yield('icon') icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>@yield('title')
+                                    <div>@yield('header')
                                         <div class="page-title-subheading">@yield('description')
-                                        </div>
-                                        <div class="page-title-subheading">
-                                          <a href="https://lbry.com/get">
-                                              Download the app!
-                                          </a>
                                         </div>
                                     </div>
                                 </div>
-                                <!--<div class="page-title-actions">
-                                    <button type="button" data-toggle="tooltip" title="@yield('tooltip')" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
-                                        <i class="fa fa-star"></i>
-                                    </button>
-                                </div>-->
                               </div>
                         </div>
                         @yield('content')

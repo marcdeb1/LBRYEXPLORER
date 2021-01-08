@@ -1,7 +1,8 @@
 @extends('minimalUI.blank')
 
 @section('icon', 'pe-7s-diamond')
-@section('title', 'LBRY Transaction '.$transaction->small_hash)
+@section('title', 'Transaction Hash Details')
+@section('header', 'Transaction '.$transaction->small_hash)
 
 @section('content')
 
@@ -24,7 +25,7 @@
               <div class="text-primary">
                 Block Height
               </div>
-                <a class="" href="{{ route('blocks', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
+                <a class="" href="{{ route('block', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
                 ({{ $transaction->confirmations }} confirmations)
             </div>
           </div>
@@ -93,10 +94,6 @@
                 {{ $transaction->output_count }}
             </div>
           </div>
-
-
-
-
         </div>
     </div>
   </div>
@@ -147,7 +144,7 @@
                                   <div class="text-primary">Block Height</div>
                                 </div>
                                 <div class="widget-content-right font-weight-bold">
-                                    <a class="" href="{{ route('blocks', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
+                                    <a class="" href="{{ route('block', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
                                 </div>
                             </div>
                         </div>
@@ -269,7 +266,7 @@
 
           </div>
 
-          <div class="">
+          <div class="mt-3">
             <i class="fa fa-8x fa-angle-right icon-gradient bg-malibu-beach"> </i>
           </div>
 

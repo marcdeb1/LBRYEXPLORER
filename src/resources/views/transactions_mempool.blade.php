@@ -24,14 +24,20 @@
 @endpush
 
 @section('icon', 'pe-7s-diamond')
-@section('title', 'LBRY Mempool Transactions')
+@section('title', 'Mempool Transactions')
+@section('header', 'Mempool Transactions')
 
 @section('content')
 <div class="row">
   <div class="col-lg-12">
     <div class="main-card mb-3 card">
       <div class="card-body table-wrapper-scroll-y my-custom-scrollbar">
-        <h5 class="card-title">Not Yet Mined Transactions: Mempool</h5>
+          <div class="table-header d-flex justify-content-between mb-2">
+              <div class="card-title">Mempool transactions</div>
+              <div class="pagination">
+                  {{ $transactions->links() }}
+              </div>
+          </div>
         <table class="mb-0 table table-hover table-striped">
           <thead>
             <tr>
@@ -54,11 +60,6 @@
             @endforeach
           </tbody>
         </table>
-      </div>
-      <div class="card-footer table-wrapper-scroll-y my-custom-scrollbar">
-          <div class="pagination center">
-            {{ $transactions->links() }}
-          </div>
       </div>
     </div>
   </div>
