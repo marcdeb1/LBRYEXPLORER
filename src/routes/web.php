@@ -13,13 +13,31 @@
 
 
 Route::get('/', 'HomeController')->name('home');
+
 Route::get('/blocks', 'BlockController@getBlocks')->name('blocks');
 Route::get('/block/{height?}', 'BlockController@getBlock')->where('height', '[0-9]+')->name('block');
-Route::get('/txs/{tx?}', 'TransactionController@getTransactions')->where('tx', '[A-Za-z0-9]{64}')->name('transactions');
+
+Route::get('/txs', 'TransactionController@getTransactions')->name('transactions');
+Route::get('/tx/{tx?}', 'TransactionController@getTransaction')->where('tx', '[A-Za-z0-9]{64}')->name('transaction');
 Route::get('/mempool', 'TransactionController@getMempoolTransactions')->name('transactions_mempool');
+
 Route::get('/address/{address}', 'AddressController@getAddress')->where('tx', '[A-Za-z0-9]{34}')->name('address');
 
 Route::get('/claims', 'ClaimController@getClaims')->name('claims');
 Route::get('/claim/{claim?}', 'ClaimController@getClaim')->where('claim', '[A-Za-z0-9\-]+')->name('claim');
 
 Route::get('/search', 'SearchController')->where('what', '[A-Za-z0-9]+');
+
+// REDIRECT OLD ROUTES TO NEW ONES
+
+Route::get('/blocks/{height?}', function ($height) {
+    return redirect(route('block', $height));
+})->where('height', '[0-9]+');
+
+Route::get('/txs/{tx?}', function ($tx) {
+    return redirect(route('transaction', $tx));
+})->where('tx', '[A-Za-z0-9]{64}');
+
+Route::get('/claims/{claim?}', function ($claim) {
+    return redirect(route('claim', $claim));
+})->where('claim', '[A-Za-z0-9\-]+');
