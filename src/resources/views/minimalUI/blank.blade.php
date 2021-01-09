@@ -196,6 +196,8 @@
                 </div>
               </div>
     <script type="text/javascript" src="{{ asset('js/main.js') }}"></script> <!-- template import -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- template import -->
+    <script type="text/javascript" src="{{ asset('js/clipboard.main.js') }}"></script>
     @stack('script')
   </body>
 </html>

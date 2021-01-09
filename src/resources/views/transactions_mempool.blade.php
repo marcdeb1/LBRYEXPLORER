@@ -42,6 +42,7 @@
           <thead>
             <tr>
               <th>Hash</th>
+              <th>First seen</th>
               <th>Value</th>
               <th>Inputs</th>
               <th>Outputs</th>
@@ -52,6 +53,7 @@
             @foreach ($transactions as $transaction)
               <tr>
                 <th scope="row"><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 20) }}..</a></th>
+                <td>{{ $transaction->transaction_time }}</td>
                 <td>{{ $transaction->value }} LBC</td>
                 <td>{{ $transaction->input_count }}</td>
                 <td>{{ $transaction->output_count }}</td>

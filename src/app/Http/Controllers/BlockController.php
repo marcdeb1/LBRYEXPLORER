@@ -18,7 +18,7 @@ class BlockController extends Controller
 
     //reversing done because need to access block in chronological order in order to calculate difficulty diff
     $blocks->reverse()->transform(function ($item, $key) use (& $previous_block_difficulty) {
-        $item->block_time = Carbon::createFromTimestamp($item->block_time)->format('d M Y  H:i:s');
+        $item->block_time = Carbon::parse($item->block_time)->diffForHumans(null, false, false, 2);
         $item->block_size /= 1000;
         $item->transactions = count(explode(',', $item->transaction_hashes));
 
@@ -45,6 +45,7 @@ class BlockController extends Controller
 
             $block->block_size /= 1000;
             $block->block_time = Carbon::createFromTimestamp($block->block_time)->format('d M Y  H:i:s');
+            $block->block_timestamp = Carbon::parse($block->block_time)->diffForHumans(null, false, false, 2);
 
             $block->confirmations = Block::latest()->take(1)->value('height') - $block->height;
 

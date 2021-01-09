@@ -38,15 +38,21 @@
     <div class="main-card mb-3 card">
       <div class="card-header">Overview</div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12 mb-2">
+                    <div class="text-primary">Timestamp</div>
+                    {{ $block->block_time }} UTC ({{ $block->block_timestamp }})
+                </div>
+            </div>
           <div class="row">
             <div class="col-lg-6 mb-2">
               <div class="text-primary">Block Size</div>
                 {{ $block->block_size }} kB
             </div>
-            <div class="col-lg-6 mb-2">
-              <div class="text-primary">Block Time</div>
-                {{ $block->block_time }} UTC
-            </div>
+              <div class="col-lg-6 mb-2">
+                  <div class="text-primary">Transactions</div>
+                  {{ count($transactions) }}
+              </div>
           </div>
           <div class="row">
             <div class="col-lg-6 mb-2">
@@ -69,38 +75,34 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-6 mb-2">
-              <div class="text-primary">Transactions</div>
-                {{ count($transactions) }}
-            </div>
-            <div class="col-lg-6 mb-2">
-              <div class="text-primary">Version</div>
-                {{ $block->version }}
-            </div>
-          </div>
-          <div class="row">
             <div class="col-lg-12 mb-2">
               <div class="text-primary">Hash</div>
-                {{ $block->hash }}
+                <span>{{ $block->hash }}</span>@include('components.copy_to_clipboard_button', array('text' => $block->hash, 'id' => "blockHashCLipboard"))
             </div>
           </div>
             <div class="collapse" id="collapsePanel">
                 <div class="row">
                     <div class="col-lg-12 mb-2">
+                        <div class="text-primary">Version</div>
+                        {{ $block->version }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 mb-2">
                         <div class="text-primary">Chainwork</div>
-                        {{ $block->chainwork }}
+                        <span>{{ $block->chainwork }}</span>@include('components.copy_to_clipboard_button', array('text' => $block->chainwork, 'id' => "blockChainworkClipboard"))
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 mb-2">
                         <div class="text-primary">Merkle Root</div>
-                        {{ $block->merkle_root }}
+                        <span>{{ $block->merkle_root }}</span>@include('components.copy_to_clipboard_button', array('text' => $block->merkle_root, 'id' => "blockMerkleRootClipboard"))
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 mb-2">
                         <div class="text-primary">Name Claim Root</div>
-                        {{ $block->name_claim_root }}
+                        <span>{{ $block->name_claim_root }}</span>@include('components.copy_to_clipboard_button', array('text' => $block->name_claim_root, 'id' => "blockNameClaimRootClipboard"))
                     </div>
                 </div>
             </div>

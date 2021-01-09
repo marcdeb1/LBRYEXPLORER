@@ -1,3 +1,5 @@
+use Illuminate\Support\Str;
+
 @extends('minimalUI.blank')
 
 @section('icon', 'pe-7s-diamond')
@@ -16,39 +18,49 @@
               <div class="text-primary">
                 Hash
               </div>
-                {{ $transaction->hash }}
+                <span>{{ $transaction->hash }}</span>@include('components.copy_to_clipboard_button', array('text' => $transaction->hash, 'id' => "transactionHashClipboard"))
             </div>
           </div>
-          @if ($transaction->block_hash_id != 'MEMPOOL')
           <div class="row">
             <div class="col-lg-12 mb-2">
               <div class="text-primary">
                 Block Height
               </div>
-                <a class="" href="{{ route('block', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
-                ({{ $transaction->confirmations }} confirmations)
-            </div>
-          </div>
-          @endif
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">
-                Time Created
-                <span class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Represents the time this transaction was created on the explorer"></span>
-              </div>
-                {{ $transaction->created_at }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">
-                Block Time
-                <span class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="The time the first confirmation of this transaction happened on the blockchain"></span>
-              </div>
-                @if ($transaction->block_hash_id != 'MEMPOOL')
-                  {{ $transaction->created_time }}
+                @if ($transaction->block_hash_id == 'MEMPOOL')
+                    <i>(Pending)</i>
                 @else
-                  Transaction not yet mined (MEMPOOL)
+                    <div class="d-flex">
+                        <a class="" href="{{ route('block', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
+                        <span class="confirmation-label ml-2" data-toggle="tooltip" title="" data-original-title="Number of blocks mined since">
+                            {{ $transaction->confirmations }} {{ Str::plural('Confirmation', $transaction->confirmations) }}
+                        </span>
+                    </div>
+                @endif
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 mb-2">
+                @if ($transaction->block_hash_id != 'MEMPOOL')
+                    <div class="text-primary">
+                        Timestamp
+                        <span class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Date and time at which the transaction was mined"></span>
+                    </div>
+                    <div>
+                        {{ $transaction->transaction_time }}
+                        <span class="text-secondary ml-2 d-none d-sm-inline-block">
+                            | Confirmed within {{ $transaction->confirmation_difference }}
+                        </span>
+                    </div>
+                @else
+                    <div class="text-primary">
+                      Time First Seen
+                      <span class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Time when the transaction was first seen in the network pool"></span>
+                    </div>
+                    <div>
+                        <i class="fas fa-spinner fa-spin"></i>
+                        {{ $transaction->first_seen_time_ago }}
+                        ({{ $transaction->created_at }})
+                    </div>
                 @endif
             </div>
           </div>

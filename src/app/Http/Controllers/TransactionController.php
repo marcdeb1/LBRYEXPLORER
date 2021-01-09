@@ -22,7 +22,7 @@ class TransactionController extends Controller
 
         $transactions->transform(function ($item, $key) {
             $item->block_height = Block::where('hash', $item->block_hash_id)->value('height');
-            $item->transaction_time = Carbon::createFromTimestamp($item->transaction_time)->format('d M Y  H:i:s');
+            $item->transaction_time = Carbon::parse($item->transaction_time)->diffForHumans(null, false, false, 2);
             $item->transaction_size /= 1000;
 
             //lets calculate fees!
@@ -62,11 +62,14 @@ class TransactionController extends Controller
                 ->select('output.value', 'output.type', 'output.script_pub_key_asm', 'output.address_list', 'output.is_spent','input.transaction_hash as spent_hash')
                 ->get();
 
+            $tx->first_seen_time_ago = Carbon::parse($tx->created_at)->diffForHumans(null, false, false, 2);;
+            $tx->transaction_size /= 1000;
 
             if($tx->block_hash_id != 'MEMPOOL') {
+                $tx->transaction_time = Carbon::parse($tx->created_time)->format('d M Y  H:i:s');
                 $tx->block_height = Block::where('hash', $tx->block_hash_id)->value('height');
                 $tx->confirmations = Block::latest()->take(1)->value('height') - $tx->block_height;
-                $tx->transaction_size /= 1000;
+                $tx->confirmation_difference = Carbon::parse($tx->created_at)->diffForHumans(Carbon::parse($tx->transaction_time), true, true, 2);
 
                 // calculate transaction fee by inputs and outputs
                 $tx->fee = 0;
@@ -80,7 +83,6 @@ class TransactionController extends Controller
                     $tx->fee = sprintf("%.f", $tx->fee);
                 }
             }
-
 
             foreach ($outputs as $output) {
                 //output.address_list is an array of address, lets parse
@@ -123,13 +125,14 @@ class TransactionController extends Controller
     }
 
     public function getMempoolTransactions() {
-        $transactions = Transaction::select('hash', 'value', 'input_count', 'output_count', 'transaction_size')
+        $transactions = Transaction::select('hash', 'value', 'created_at', 'input_count', 'output_count', 'transaction_size')
             ->where('block_hash_id', 'MEMPOOL')
             ->orderBy('id', 'desc')
             ->simplePaginate(25);
 
         $transactions->transform(function ($item, $key) {
             $item->transaction_size /= 1000;
+            $item->transaction_time = Carbon::parse($item->created_at)->diffForHumans(null, false, false, 2);
             return $item;
         });
 

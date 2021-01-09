@@ -8,6 +8,7 @@ import VueAxios from 'vue-axios';
 import axios from 'axios';
 
 require('./bootstrap');
+require('./clipboard');
 
 window.Vue = require('vue');
 Vue.use(VueAxios, axios);

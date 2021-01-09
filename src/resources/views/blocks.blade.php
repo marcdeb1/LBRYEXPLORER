@@ -42,7 +42,7 @@
           <thead>
             <tr>
               <th>Height</th>
-              <th>Block Time</th>
+              <th>Age</th>
               <th>Transactions</th>
               <th>Size</th>
               <th>Difficulty

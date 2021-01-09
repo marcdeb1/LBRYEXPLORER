@@ -10664,3 +10664,46 @@ a.text-dark:focus {
   display: none;
 }
 
+#collapseLink.collapsed .card-arrow-less {
+  display: none;
+}
+
+#collapseLink.collapsed .card-arrow-more {
+  display: block;
+}
+
+#collapseLink.collapsed .card-btn-arrow {
+  transform: rotate(-180deg);
+}
+
+#collapseLink .card-arrow-less {
+  display: block;
+}
+
+#collapseLink .card-arrow-more {
+  display: none;
+}
+
+.clipboard-button {
+  cursor: pointer;
+}
+
+.clipboard-button .clipboard-button-icon {
+  color: lightgrey;
+}
+
+.confirmation-label {
+  color: #77838f;
+  background-color: rgba(60, 60, 60, 0.1);
+  position: relative;
+  padding-left: 1.15rem;
+  letter-spacing: 0.8px;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 0.60938rem;
+  line-height: 1.7;
+  padding: 0.2rem 0.5rem;
+}
+
