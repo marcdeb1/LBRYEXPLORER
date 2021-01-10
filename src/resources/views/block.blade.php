@@ -112,7 +112,7 @@
                         Click to see&nbsp;
                         <span class="card-arrow-more">more</span>
                         <span class="card-arrow-less">less</span>
-                        <span class="card-btn-arrow ml-2">
+                        <span class="card-btn-arrow ml-2 d-flex align-items-center">
                             <span class="fas fa-arrow-up small"></span>
                         </span>
                     </span>

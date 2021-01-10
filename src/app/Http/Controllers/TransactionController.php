@@ -54,12 +54,12 @@ class TransactionController extends Controller
 
             $inputs = $tx->inputs()
                 ->leftJoin('address', 'input.input_address_id', 'address.id')
-                ->select('input.prevout_hash', 'input.is_coinbase', 'input.value', 'address.address')
+                ->select('input.prevout_hash', 'input.is_coinbase', 'input.value', 'input.script_sig_hex', 'address.address')
                 ->get();
 
             $outputs = $tx->outputs()
                 ->leftJoin('input', 'output.spent_by_input_id', 'input.id')
-                ->select('output.value', 'output.type', 'output.script_pub_key_asm', 'output.address_list', 'output.is_spent','input.transaction_hash as spent_hash')
+                ->select('output.value', 'output.type', 'output.script_pub_key_asm', 'output.script_pub_key_hex', 'output.address_list', 'output.is_spent','input.transaction_hash as spent_hash')
                 ->get();
 
             $tx->first_seen_time_ago = Carbon::parse($tx->created_at)->diffForHumans(null, false, false, 2);;

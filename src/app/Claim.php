@@ -74,14 +74,14 @@ class Claim extends Model
 {
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'claim';
 
     /**
      * The "type" of the auto-incrementing ID.
-     * 
+     *
      * @var string
      */
     protected $keyType = 'integer';
@@ -113,5 +113,25 @@ class Claim extends Model
     public function claimTags()
     {
         return $this->hasMany('App\ClaimTag', null, 'claim_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentTag() {
+        $contentTag = null;
+        if (substr($this->content_type, 0, 5) === 'audio') {
+            $contentTag = 'audio';
+        } else if (substr($this->content_type, 0, 5) === 'video') {
+            $contentTag = 'video';
+        } else if (substr($this->content_type, 0, 5) === 'image') {
+            $contentTag = 'image';
+        } else if ($this->content_type === 'application/pdf') {
+            $contentTag = 'pdf';
+        }
+        if (!$contentTag && $this->claim_type == 2) {
+            $contentTag = 'channel';
+        }
+        return $contentTag;
     }
 }

@@ -5,7 +5,7 @@
             @if($priceInfo->percentChangeUsd > 0)
                 <span class="text-success"> (+{{$priceInfo->percentChangeUsd}}%)</span>
             @else
-                <span class="text-danger"> (-{{$priceInfo->percentChangeUsd}}%)</span>
+                <span class="text-danger"> ({{$priceInfo->percentChangeUsd}}%)</span>
             @endif
         </span>
         <span class="text-muted"> | {{$priceInfo->priceBtc}} BTC</span>

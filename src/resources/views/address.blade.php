@@ -43,9 +43,8 @@
                       <div class="widget-content-left">
                         <div class="text-primary">Balance</div>
                       </div>
-                      <div class="widget-content-right">
-                        <div class="">{{ $address->balance }}</div>
-                        <div class="widget-subheading">LBC</div>
+                      <div class="ml-3">
+                        <span class="">{{ $address->balance }} LBC</span>
                       </div>
                     </div>
                   </div>
@@ -64,9 +63,8 @@
                       <div class="widget-content-left">
                         <div class="text-primary">Value</div>
                       </div>
-                      <div class="widget-content-right">
-                        <div class="">$ {{ $address->balance * 0.015 }}</div>
-                        <div class="widget-subheading">@ $0.015/LBC</div>
+                      <div class="ml-3">
+                        <span class="">${{ $address->balance * $priceInfo->priceUsd }}</span>
                       </div>
                     </div>
                   </div>
@@ -85,9 +83,8 @@
                       <div class="widget-content-left">
                         <div class="text-primary">Received</div>
                       </div>
-                      <div class="widget-content-right">
-                        <div class="">{{ $address->total_received }}</div>
-                        <div class="widget-subheading">LBC</div>
+                      <div class="ml-3">
+                        <div class="">{{ $address->total_received }} LBC</div>
                       </div>
                     </div>
                   </div>
@@ -106,9 +103,8 @@
                       <div class="widget-content-left">
                         <div class="text-primary">Sent</div>
                       </div>
-                      <div class="widget-content-right">
-                        <div class="">{{ $address->total_sent }}</div>
-                        <div class="widget-subheading">LBC</div>
+                      <div class="ml-3">
+                        <div class="">{{ $address->total_sent }} LBC</div>
                       </div>
                     </div>
                   </div>

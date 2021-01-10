@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Claim;
 use Illuminate\Http\Request;
 
 class ClaimController extends Controller
 {
     public function getClaims() {
-        $claims = Block::select('height', 'block_time', 'transaction_hashes', 'block_size', 'difficulty', 'nonce')->orderBy('id', 'desc')->simplePaginate(25);
+        $claims = Claim::orderBy('id', 'desc')
+            ->simplePaginate(25);
 
         return view('claims', [
             'claims' => $claims
@@ -16,8 +18,11 @@ class ClaimController extends Controller
 
     public function getClaim($claim = null) {
         if($claim) {
+            $claim = Claim::where('claim_id', $claim)->firstOrFail();
 
-
+            return view('claim', [
+                'claim' => $claim
+            ]);
         } else {
             return redirect('/claims');
         }

@@ -136,7 +136,7 @@
                                 </li>
                                 <li class="app-sidebar__heading">Claimtrie</li>
                                 <li>
-                                  <a href="{{ route('claims') }}" class="{{ Route::currentRouteName() === 'claims' ? 'mm-active' : ''  }}" onclick="return false;">
+                                  <a href="{{ route('claims') }}" class="{{ Route::currentRouteName() === 'claims' ? 'mm-active' : ''  }}">
                                     <i class="metismenu-icon pe-7s-airplay"></i>
                                     Claims
                                   </a>

@@ -65,195 +65,75 @@ use Illuminate\Support\Str;
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-12 mb-2">
+            <div class="col-lg-6 mb-2">
               <div class="text-primary">
                 Amount
               </div>
                 {{ $transaction->value }} LBC
             </div>
-          </div>
-          @if (($transaction->block_hash_id != 'MEMPOOL'))
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">
-                Fee
+              <div class="col-lg-6 mb-2">
+                  <div class="text-primary">
+                      Fee
+                  </div>
+                  @if ($transaction->block_hash_id != 'MEMPOOL')
+                    {{ $transaction->fee }} LBC
+                  @else
+                    <i>(Pending)</i>
+                  @endif
               </div>
-                {{ $transaction->fee }} LBC
-            </div>
           </div>
-          @endif
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">
-                Size
-              </div>
-                {{ $transaction->transaction_size }} kB
+            <div class="row">
+                <div class="col-lg-6 mb-2">
+                    <div class="text-primary">
+                        Inputs
+                    </div>
+                    {{ $transaction->input_count }}
+                </div>
+                <div class="col-lg-6 mb-2">
+                    <div class="text-primary">
+                        Outputs
+                    </div>
+                    {{ $transaction->output_count }}
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">
-                Inputs
-              </div>
-                {{ $transaction->input_count }}
+            <div class="collapse" id="collapsePanel">
+                <div class="row">
+                    <div class="col-lg-12 mb-2">
+                        <div class="text-primary">
+                            Size
+                        </div>
+                        {{ $transaction->transaction_size }} kB
+                    </div>
+                </div>
+                <!--
+                <div class="row">
+                    <div class="col-lg-12 mb-2">
+                        <div class="text-primary">
+                            Script signature
+                            <span class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Transaction inputs script signatures in hexadecimal format"></span>
+                        </div>
+                        @foreach($inputs as $input)
+                            <div><span>{{ substr($input->script_sig_hex, 0, 30) }}...</span>@include('components.copy_to_clipboard_button', array('text' => $input->script_sig, 'id' => "transactionOutputPubKey".$loop->index))</div>
+                        @endforeach
+                    </div>
+                </div>
+                -->
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <div class="text-primary">
-                Outputs
-              </div>
-                {{ $transaction->output_count }}
-            </div>
-          </div>
+            <span>
+                <a class="d-block collapsed text-decoration-none" id="collapseLink" data-toggle="collapse" href="#collapsePanel" role="button" aria-expanded="false" aria-controls="collapse">
+                    <span class="d-flex">
+                        Click to see&nbsp;
+                        <span class="card-arrow-more">more</span>
+                        <span class="card-arrow-less">less</span>
+                        <span class="card-btn-arrow ml-2 d-flex align-items-center">
+                            <span class="fas fa-arrow-up small"></span>
+                        </span>
+                    </span>
+                </a>
+            </span>
         </div>
     </div>
   </div>
-  <!--<div class="col-lg-4 mb-4 mb-lg-0">
-    <div class="main-card mb-3 card">
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">
-                  <div class="widget-content p-0">
-                      <div class="widget-content-outer">
-                          <div class="widget-content-wrapper">
-                              <div class="widget-content-left">
-                                  <div class="text-primary">Time Created</div>
-                              </div>
-                              <div class="widget-content-right">
-                                  <div class="">{{ $transaction->created_at }}</div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </li>
-                <li class="list-group-item">
-                  <div class="widget-content p-0">
-                      <div class="widget-content-outer">
-                          <div class="widget-content-wrapper">
-                              <div class="widget-content-left">
-                                  <div class="text-primary">Block Time</div>
-                              </div>
-                              <div class="widget-content-right">
-                                  <div class="">
-                                    @if ($transaction->block_hash_id != 'MEMPOOL')
-                                      {{ $transaction->created_time }}
-                                    @else
-                                      MEMPOOL
-                                    @endif
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </li>
-                @if ($transaction->block_hash_id != 'MEMPOOL')
-                  <li class="list-group-item">
-                    <div class="widget-content p-0">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                  <div class="text-primary">Block Height</div>
-                                </div>
-                                <div class="widget-content-right font-weight-bold">
-                                    <a class="" href="{{ route('block', $transaction->block_height) }}">{{ $transaction->block_height }}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="widget-content p-0">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                  <div class="text-primary">Confirmations</div>
-                                </div>
-                                <div class="widget-content-right font-weight-bold">
-                                    <div class="">{{ $transaction->confirmations }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </li>
-                @endif
-                <li class="list-group-item">
-                  <div class="widget-content p-0">
-                      <div class="widget-content-outer">
-                          <div class="widget-content-wrapper">
-                              <div class="widget-content-left">
-                                  <div class="text-primary">Amount</div>
-                              </div>
-                              <div class="widget-content-right">
-                                  <div class="widget-numbers text-success">{{ $transaction->value }} LBC</div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </li>
-                @if (($transaction->block_hash_id != 'MEMPOOL') && (!$inputs[0]->is_coinbase))
-                  <li class="list-group-item">
-                    <div class="widget-content p-0">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="text-primary">Fee</div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <div class="widget-numbers text-danger">{{ $transaction->fee }} LBC</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </li>
-                @endif
-                <li class="list-group-item">
-                  <div class="widget-content p-0">
-                      <div class="widget-content-outer">
-                          <div class="widget-content-wrapper">
-                              <div class="widget-content-left">
-                                  <div class="text-primary">Size</div>
-                              </div>
-                              <div class="widget-content-right">
-                                  <div class="">{{ $transaction->transaction_size }} kB</div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </li>
-                <li class="list-group-item">
-                  <div class="widget-content p-0">
-                      <div class="widget-content-outer">
-                          <div class="widget-content-wrapper">
-                              <div class="widget-content-left">
-                                  <div class="text-primary">Inputs</div>
-                              </div>
-                              <div class="widget-content-right">
-                                  <div class="">{{ $transaction->input_count }}</div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </li>
-                <li class="list-group-item">
-                  <div class="widget-content p-0">
-                      <div class="widget-content-outer">
-                          <div class="widget-content-wrapper">
-                              <div class="widget-content-left">
-                                  <div class="text-primary">Outputs</div>
-                              </div>
-                              <div class="widget-content-right">
-                                  <div class="">{{ $transaction->output_count }}</div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-  </div>-->
-
   <div class="col-lg-7 mb-4 mb-lg-0">
     <div class="main-card mb-3 card">
       <div class="card-header">Details</div>
@@ -292,20 +172,16 @@ use Illuminate\Support\Str;
                   <div
                   @switch ($output->opcode_friendly[0])
                     @case('N')
-                      class="mb-2 mr-2 badge badge-success">
+                      class="mb-2 mr-2 badge badge-success py-1 px-1">
                       @break
-
                     @case('U')
-                      class="mb-2 mr-2 badge badge-info">
+                      class="mb-2 mr-2 badge badge-info py-1 px-1">
                       @break
-
                     @case('S')
-                      class="mb-2 mr-2 badge badge-alternate">
+                      class="mb-2 mr-2 badge badge-alternate py-1 px-1">
                       @break
-
                     @default
                       @break
-
                   @endswitch
                   {{ $output->opcode_friendly }}</div>
                 </h5>
@@ -324,9 +200,6 @@ use Illuminate\Support\Str;
             @endforeach
           </div>
         </div>
-
-
-
       </div>
     </div>
   </div>

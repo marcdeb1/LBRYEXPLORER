@@ -35,7 +35,7 @@ class Price
             $priceInfo = Cache::get('priceInfo');
         } else {
             $priceInfo = $this->getPrice();
-            Cache::put('priceInfo', $priceInfo, $seconds = 300);
+            Cache::put('priceInfo', $priceInfo, $seconds = 60);
         }
         $request->attributes->add(['priceInfo' => $priceInfo]);
         View::share('priceInfo', $priceInfo);

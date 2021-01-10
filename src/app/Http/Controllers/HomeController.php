@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Claim;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -21,7 +22,6 @@ class HomeController extends Controller
     {
         $blocks = Block::orderBy('id', 'desc')->take(15)->get(['height', 'block_time', 'transaction_hashes', 'block_size', 'difficulty']);
 
-        //$transactions = Transaction::where('block_hash_id', '<>' , 'MEMPOOL')->orderBy('id', 'desc')->take(15)->get(['hash', 'transaction_time', 'value']);
         $transactions = Transaction::select('id', 'hash', 'transaction_time', 'value')
                                     ->where('block_hash_id', '<>' , 'MEMPOOL')
                                     ->orderBy('id', 'desc')
@@ -29,17 +29,22 @@ class HomeController extends Controller
                                     ->with(['inputs', 'outputs'])
                                     ->get();
 
+        $claims = Claim::where('bid_state', '<>', 'Expired')
+            ->orderBy('id', 'desc')
+            ->take(6)
+            ->get();
+
         $now = Carbon::now();
 
         $blocks->transform(function ($item, $key) use ($now) {
-            $item->age = Carbon::createFromTimestamp($item->block_time)->diffInMinutes($now);
+            $item->age = Carbon::createFromTimestamp($item->block_time)->diffForHumans();
             $item->block_size /= 1000;
             $item->transactions = count(explode(',', $item->transaction_hashes));
             return $item;
         });
 
         $transactions->transform(function ($item, $key) use ($now) {
-            $item->age = Carbon::createFromTimestamp($item->transaction_time)->diffInMinutes($now);
+            $item->age = Carbon::createFromTimestamp($item->transaction_time)->diffForHumans();
 
             //lets calculate fees!
             $item->fee = 0;
@@ -59,7 +64,8 @@ class HomeController extends Controller
 
         return view('home', [
           'blocks' => $blocks,
-          'transactions' => $transactions
+          'transactions' => $transactions,
+          'claims' => $claims
         ]);
     }
 }
