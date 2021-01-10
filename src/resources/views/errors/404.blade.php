@@ -1,4 +1,4 @@
-@extends('errors::minimal')
+@extends('minimalUI::blank')
 
 @section('title', __('Not Found'))
 @section('code', '404')

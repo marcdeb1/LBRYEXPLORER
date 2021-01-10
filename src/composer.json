@@ -11,7 +11,9 @@
         "php": "^7.4.11",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^8.16.1",
-        "laravel/tinker": "^v2.5.0"
+        "laravel/tinker": "^v2.5.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^v3.5.2",

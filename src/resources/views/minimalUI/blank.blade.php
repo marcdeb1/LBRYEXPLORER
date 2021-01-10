@@ -66,6 +66,9 @@
                         </div>
                     </form>
                 </div>
+                <div class="d-flex col-md-6 align-items-end justify-content-end">
+                    @include('components.price_box')
+                </div>
             </div>
         </div>
         <div class="app-main">
