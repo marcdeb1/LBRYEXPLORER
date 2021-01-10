@@ -1,38 +1,11 @@
 @extends('minimalUI.blank')
 
-@push('styles')
-<style>
-  .my-custom-scrollbar {
-    position: relative;
-    height: 495px;
-    overflow: auto;
-  }
-
-  .table-wrapper-scroll-y {
-    display: block;
-  }
-</style>
-@endpush
-
 @section('icon', 'pe-7s-airplay')
 @section('title', 'Claim '.$claim->id)
 @section('header', 'Claim '.$claim->id)
 @section('description', $claim->hash)
 
 @section('content')
-<div class="row">
-  <div class="col-lg-12">
-    <a class="mb-2 mr-2 btn-transition btn btn-sm btn-outline-primary float-left" href="{{ route('blocks', $block->height - 1) }}">« Previous Block</a>
-    <a class="mb-2 mr-2 btn-transition btn btn-sm btn-outline-primary float-right"
-      @if ($block->confirmations == 0)
-        data-toggle="tooltip" title="" data-placement="top" data-original-title="This is the last mined block!" href="#"
-      @else
-        href="{{ route('block', $block->height + 1) }}"
-      @endif
-      >Next Block »</a>
-  </div>
-</div>
-
 <div class="row">
   <div class="col-lg-5 mb-4 mb-lg-0">
     <div class="main-card mb-3 card">
@@ -121,16 +94,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                  @foreach ($transactions as $transaction)
-                    <tr>
-                      <td scope="row"><a href="{{ route('transaction', $transaction->hash) }}">{{ substr($transaction->hash, 0, 10) }}..</a></td>
-                      <td>{{ $transaction->input_count }}</td>
-                      <td>{{ $transaction->output_count }}</td>
-                      <td>{{ $transaction->value }} LBC</td>
-                      <td>{{ $transaction->transaction_size }} kB</td>
-                      <td>{{ $transaction->fee }} LBC</td>
-                    </tr>
-                  @endforeach
                 </tbody>
             </table>
         </div>
