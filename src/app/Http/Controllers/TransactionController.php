@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Claim;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -55,14 +56,16 @@ class TransactionController extends Controller
             $inputs = $tx->inputs()
                 ->leftJoin('address', 'input.input_address_id', 'address.id')
                 ->select('input.prevout_hash', 'input.is_coinbase', 'input.value', 'input.script_sig_hex', 'address.address')
+                ->orderBy('vin')
                 ->get();
 
             $outputs = $tx->outputs()
                 ->leftJoin('input', 'output.spent_by_input_id', 'input.id')
-                ->select('output.value', 'output.type', 'output.script_pub_key_asm', 'output.script_pub_key_hex', 'output.address_list', 'output.is_spent','input.transaction_hash as spent_hash')
+                ->select('output.value', 'output.vout', 'output.type', 'output.script_pub_key_asm', 'output.script_pub_key_hex', 'output.address_list', 'output.is_spent','input.transaction_hash as spent_hash')
+                ->orderBy('vout')
                 ->get();
 
-            $tx->first_seen_time_ago = Carbon::parse($tx->created_at)->diffForHumans(null, false, false, 2);;
+            $tx->first_seen_time_ago = Carbon::parse($tx->created_at)->diffForHumans(null, false, false, 2);
             $tx->transaction_size /= 1000;
 
             if($tx->block_hash_id != 'MEMPOOL') {
@@ -90,6 +93,13 @@ class TransactionController extends Controller
                 $output->address_list = rtrim($output->address_list, "]");
                 $output->address_list = str_replace('"', '', $output->address_list);
                 $output->address_list = explode(',', $output->address_list);
+                $claim = Claim::where(['transaction_hash_id' => $tx->hash, 'vout' => $output->vout])
+                    ->select(['claim_id', 'vout', 'transaction_hash_id'])
+                    ->first();
+                if($claim !== null) {
+                    $output->claim_id = $claim->claim_id;
+                }
+
 
                 //check transaction opcode {OP_DUP | OP_CLAIM_NAME | OP_UPDATE_CLAIM | OP_SUPPORT_CLAIM}
                 $output->opcode_friendly = explode(' ', $output->script_pub_key_asm)[0];
@@ -98,20 +108,16 @@ class TransactionController extends Controller
                         // if standard transaction (type: pubkeyhash) then pass blank opcode to view
                         $output->opcode_friendly = " ";
                         break;
-
                     case 'OP_CLAIM_NAME':
                         $output->opcode_friendly = "NEW CLAIM";
                         break;
-
                     case 'OP_UPDATE_CLAIM':
                         $output->opcode_friendly = "UPDATE CLAIM";
                         break;
-
                     case 'OP_SUPPORT_CLAIM':
                         $output->opcode_friendly = "SUPPORT CLAIM";
                         break;
                 }
-
             }
 
             return view('transaction', [

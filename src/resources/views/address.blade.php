@@ -14,14 +14,17 @@
 
 @section('icon', 'pe-7s-wallet')
 @section('title', 'Address '.$address->address)
-@section('header', 'Address '.$address->address)
+@section('header', 'Address')
+@section('description')
+    <div>{{$address->address}} @include('components.copy_to_clipboard_button', array('text' => $address->address, 'id' => 'addressClipboardHeader'))</div>
+@endsection
 
 @section('content')
 
 <div class="row">
   <div class="col-lg-12 mb-4 mb-lg-0">
     <div class="main-card mb-3 card">
-      <div class="no-gutters row">
+      <div class="row">
         <div class="col-md-3">
           <div class="pt-0 pb-0 card-body">
             <ul class="list-group list-group-flush">

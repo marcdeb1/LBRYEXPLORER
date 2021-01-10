@@ -20,7 +20,7 @@
             <tr>
               <th>Hash</th>
               <th>Block</th>
-              <th>Timestamp</th>
+              <th>Age</th>
               <th>Value</th>
               <th>Inputs</th>
               <th>Outputs</th>

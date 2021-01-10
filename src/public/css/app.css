@@ -10735,7 +10735,7 @@ a.text-dark:focus {
 }
 
 .claimBox .contentTag {
-  background-color: rosybrown;
+  background-color: darkgoldenrod;
 }
 
 .claimBox .nsfwTag {
@@ -10746,8 +10746,17 @@ a.text-dark:focus {
   background-color: darkblue;
 }
 
+.claimBox .pendingTag {
+  background-color: darkgrey;
+}
+
 .claimBox .claimImage {
   height: 160px;
+}
+
+.claimBox .claimThumbnail {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .claimBox .claimDefaultImage {

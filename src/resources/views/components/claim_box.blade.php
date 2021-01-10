@@ -7,6 +7,9 @@
             @if ($claim->bid_state == 'Controlling')
                 <div class="bidStateTag claimTag px-2 py-1 mr-2">Controlling</div>
             @endif
+            @if ($claim->transaction_time == 0)
+                <div class="pendingTag claimTag px-2 py-1 mr-2">Pending</div>
+            @endif
             @if ($claim->is_nsfw)
                 <div class="nsfwTag claimTag px-2 py-1 mr-2">NSFW</div>
             @endif
@@ -14,7 +17,7 @@
         <a href="{{ route('claim', $claim->claim_id) }}">
             <div class="claimImage">
                 @if (!$claim->is_nsfw && strlen(trim($claim->thumbnail_url)) > 0)
-                    <img class="img-fluid h-100 w-100" src="{{ htmlspecialchars($claim->thumbnail_url) }}" alt="" />
+                    <img class="claimThumbnail img-fluid h-100 w-100" src="{{ htmlspecialchars($claim->thumbnail_url) }}" alt="" />
                 @else
                     <div class="claimDefaultImage d-flex align-items-center justify-content-center h-100">
                         <img src="{{ asset('images/logo.svg') }}" title="LBRY Explorer" height="50" width="50" />
@@ -28,6 +31,8 @@
             <div class="claimTitle pr-4">
                 @if ($claim->title)
                     {{$claim->title}}
+                @elseif ($claim->name)
+                    {{$claim->name}}
                 @else
                     <i>No Title</i>
                 @endif

@@ -17,7 +17,9 @@
 @section('icon', 'pe-7s-box2')
 @section('title', 'Block #'.$block->height)
 @section('header', 'Block #'.$block->height)
-@section('description', 'Block Hash '.$block->small_hash)
+@section('description')
+    <div>{{$block->hash}} @include('components.copy_to_clipboard_button', array('text' => $block->hash, 'id' => 'blockHashClipboardHeader'))</div>
+@endsection
 
 @section('content')
 <div class="row">

@@ -116,22 +116,29 @@ class Claim extends Model
     }
 
     /**
+     * Get claim content tag from content type
      * @return string
      */
     public function getContentTag() {
         $contentTag = null;
-        if (substr($this->content_type, 0, 5) === 'audio') {
-            $contentTag = 'audio';
-        } else if (substr($this->content_type, 0, 5) === 'video') {
-            $contentTag = 'video';
-        } else if (substr($this->content_type, 0, 5) === 'image') {
-            $contentTag = 'image';
-        } else if ($this->content_type === 'application/pdf') {
-            $contentTag = 'pdf';
+        if ($this->type == "channel") {
+            return 'channel';
+        } elseif ($this->type == "claimreference") {
+            return 'support';
+        } elseif ($this->type == "claimlist") {
+            return 'list';
+        } else {
+            if (substr($this->content_type, 0, 5) === 'audio') {
+                return 'audio';
+            } else if (substr($this->content_type, 0, 5) === 'video') {
+                return 'video';
+            } else if (substr($this->content_type, 0, 5) === 'image') {
+                return 'image';
+            } else if ($this->content_type === 'application/pdf') {
+                return 'pdf';
+            } else {
+                return 'document';
+            }
         }
-        if (!$contentTag && $this->claim_type == 2) {
-            $contentTag = 'channel';
-        }
-        return $contentTag;
     }
 }

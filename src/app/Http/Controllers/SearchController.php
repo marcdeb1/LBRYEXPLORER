@@ -23,27 +23,21 @@ class SearchController extends Controller
 
       switch(strlen($input)) {
         case 34:
-          return redirect()->route('address', $input);
-          break;
-
+          return redirect(route('address', $input));
         case 64:
           try {
             $input = Block::where('hash', $input)->firstOrFail();
-            return redirect()->route('block', (int) $input->height);
+            return redirect(route('block', (int) $input->height));
           } catch (ModelNotFoundException $e) {
             $input = Transaction::where('hash', $input)->firstOrFail();
-            return redirect()->route('transaction', $input->hash);
+            return redirect(route('transaction', $input->hash));
           }
-          break;
-
         default:
           if(is_numeric($input)) {
-            return redirect()->route('block', (int) $input);
+            return redirect(route('block', (int) $input));
           }
-
           abort(404);
           break;
       }
-
     }
 }

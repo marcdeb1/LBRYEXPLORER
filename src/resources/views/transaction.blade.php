@@ -4,7 +4,12 @@ use Illuminate\Support\Str;
 
 @section('icon', 'pe-7s-diamond')
 @section('title', 'Transaction Hash Details')
-@section('header', 'Transaction '.$transaction->small_hash)
+@section('header', 'Transaction')
+@section('description')
+    <div>
+        {{$transaction->hash}} @include('components.copy_to_clipboard_button', array('text' => $transaction->hash, 'id' => 'transactionHashClipboardHeader'))
+    </div>
+@endsection
 
 @section('content')
 
@@ -139,19 +144,19 @@ use Illuminate\Support\Str;
       <div class="card-header">Details</div>
       <div class="card-body">
         <div class="row">
-          <div class="col-sm-5 mb-4 mb-sm-0">
+          <div class="col-sm-5 mb-2 mb-sm-0">
             <h5 class="card-title">{{ $transaction->input_count }} inputs</h5>
 
             @foreach ($inputs as $input)
-              <div class="card-shadow-primary border mb-3 card card-body border-primary">
+              <div class="card-shadow-primary border mb-2 card card-body border-primary p-3">
                 @if ($input->is_coinbase)
                   <h5 class="card-title">Block Reward</h5>
                   New Coins
                 @else
                   <h5 class="card-title">{{ $input->value }} LBC</h5>
-                  <p>
+                  <div>
                     from <a href="{{ route('address', $input->address) }}">{{ $input->address }}</a> <a href="{{ route('transaction', $input->prevout_hash) }}">(output)</a>
-                  </p>
+                  </div>
                 @endif
               </div>
             @endforeach
@@ -162,30 +167,20 @@ use Illuminate\Support\Str;
             <i class="fa fa-8x fa-angle-right icon-gradient bg-malibu-beach"> </i>
           </div>
 
-          <div class="col-sm-5 mb-4 mb-sm-0">
+          <div class="col-sm-5 mb-2 mb-sm-0">
             <h5 class="card-title">{{ $transaction->output_count }} outputs</h5>
 
             @foreach ($outputs as $output)
-              <div class="card-shadow-info border mb-3 card card-body border-info">
-                <h5 class="card-title">
-                  {{ $output->value }} LBC
-                  <div
-                  @switch ($output->opcode_friendly[0])
-                    @case('N')
-                      class="mb-2 mr-2 badge badge-success py-1 px-1">
-                      @break
-                    @case('U')
-                      class="mb-2 mr-2 badge badge-info py-1 px-1">
-                      @break
-                    @case('S')
-                      class="mb-2 mr-2 badge badge-alternate py-1 px-1">
-                      @break
-                    @default
-                      @break
-                  @endswitch
-                  {{ $output->opcode_friendly }}</div>
-                </h5>
-                <p>
+              <div class="card-shadow-info border mb-2 card card-body border-info p-3">
+                <div class="card-title d-flex justify-content-between align-items-center">
+                  <span>{{ $output->value }} LBC</span>
+                    @if ($output->claim_id)
+                        <a class="text-decoration-none py-2 px-2 badge badge-success text-white" href="{{route('claim', $output->claim_id)}}">
+                            {{ $output->opcode_friendly }}
+                        </a>
+                    @endif
+                </div>
+                <div>
                   to
                   @foreach ($output->address_list as $recipient_address)
                     <a href="{{ route('address', $recipient_address) }}">{{ $recipient_address }}</a>
@@ -195,7 +190,7 @@ use Illuminate\Support\Str;
                       (unspent)
                     @endif
                   @endforeach
-                </p>
+                </div>
               </div>
             @endforeach
           </div>

@@ -29,8 +29,14 @@
     .bidStateTag {
         background-color: darkblue;
     }
+    .pendingTag {
+        background-color: darkgrey;
+    }
     .claimImage {
         height: 160px;
+    }
+    .claimThumbnail {
+        object-fit: cover;
     }
     .claimDefaultImage {
         background-color: #2f9176;

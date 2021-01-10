@@ -56,7 +56,7 @@
             <div class="app-header__menu"></div>
             <div class="app-header__content">
                 <div class="d-flex col-md-6 px-0">
-                    <form method="GET" action="/search" class="w-100">
+                    <form method="GET" action="/search" class="w-100 m-0">
                         @csrf
                         <div class="input-group">
                             <input name="q" type="text" class="form-control form-control-sm" placeholder="Search by Address / Transaction hash / Block / Claim ID">
