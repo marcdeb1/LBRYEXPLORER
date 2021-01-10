@@ -29,6 +29,10 @@ Route::get('/claim/{claim?}', 'ClaimController@getClaim')->where('claim', '[A-Za
 
 Route::get('/search', 'SearchController')->where('what', '[A-Za-z0-9]+');
 
+Route::get('/stats/mining', 'StatisticsController@getMiningStats')->name('statistics_mining');
+
+Route::get('/api/stats/mining', 'APIController@miningStats')->name('api_mining_stats');
+
 
 // REDIRECT OLD ROUTES TO NEW ONES
 

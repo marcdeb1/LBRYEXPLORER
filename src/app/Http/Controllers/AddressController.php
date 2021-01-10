@@ -75,8 +75,4 @@ class AddressController extends Controller
             'transactions' => $txs
         ]);
     }
-
-
-
-
 }
