@@ -13,7 +13,8 @@
         "laravel/framework": "^8.16.1",
         "laravel/tinker": "^v2.5.0",
         "guzzlehttp/guzzle": "^7.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-bcmath": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^v3.5.2",

@@ -22,11 +22,13 @@ Route::get('/tx/{tx?}', 'TransactionController@getTransaction')->where('tx', '[A
 Route::get('/mempool', 'TransactionController@getMempoolTransactions')->name('transactions_mempool');
 
 Route::get('/address/{address}', 'AddressController@getAddress')->where('tx', '[A-Za-z0-9]{34}')->name('address');
+Route::get('/addresses', 'AddressController@getAddresses')->name('addresses');
 
 Route::get('/claims', 'ClaimController@getClaims')->name('claims');
 Route::get('/claim/{claim?}', 'ClaimController@getClaim')->where('claim', '[A-Za-z0-9\-]+')->name('claim');
 
 Route::get('/search', 'SearchController')->where('what', '[A-Za-z0-9]+');
+
 
 // REDIRECT OLD ROUTES TO NEW ONES
 

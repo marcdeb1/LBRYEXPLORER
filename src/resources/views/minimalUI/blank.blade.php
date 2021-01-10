@@ -134,6 +134,12 @@
                                       </li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a href="{{ route('addresses') }}" class="{{ Route::currentRouteName() === 'addresses' ? 'mm-active' : ''  }}">
+                                        <i class="metismenu-icon pe-7s-culture"></i>
+                                        Accounts
+                                    </a>
+                                </li>
                                 <li class="app-sidebar__heading">Claimtrie</li>
                                 <li>
                                   <a href="{{ route('claims') }}" class="{{ Route::currentRouteName() === 'claims' ? 'mm-active' : ''  }}">
@@ -141,6 +147,7 @@
                                     Claims
                                   </a>
                                 </li>
+                                <li class="app-sidebar__heading">Statistics</li>
                             </ul>
                         </div>
                     </div>
