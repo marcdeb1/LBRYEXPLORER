@@ -2,10 +2,8 @@
 
 
 @push('script')
-    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
-    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-    <script src="https://www.amcharts.com/lib/3/plugins/responsive/responsive.min.js" type="text/javascript"></script>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script type="text/javascript" src="{{ asset('js/mining-inflation-chart.js') }}"></script>
 @endpush
 
@@ -14,9 +12,9 @@
     <link href="https://www.amcharts.com/lib/3/plugins/export/export.css" rel="stylesheet">
 @endpush
 
-@section('icon', 'pe-7s-culture')
-@section('title', 'Accounts')
-@section('header', 'Accounts')
+@section('icon', 'pe-7s-hammer')
+@section('title', 'Mining statistics')
+@section('header', 'Mining statistics')
 
 @section('content')
 <div class="row">

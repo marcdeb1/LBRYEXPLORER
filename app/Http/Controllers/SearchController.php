@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Claim;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -11,33 +12,31 @@ use App\Transaction;
 
 class SearchController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function __invoke(Request $request)
     {
-      $input = trim($request->get('q'));
+        $input = trim($request->get('q'));
 
-      switch(strlen($input)) {
-        case 34:
-          return redirect(route('address', $input));
-        case 64:
-          try {
-            $input = Block::where('hash', $input)->firstOrFail();
-            return redirect(route('block', (int) $input->height));
-          } catch (ModelNotFoundException $e) {
-            $input = Transaction::where('hash', $input)->firstOrFail();
-            return redirect(route('transaction', $input->hash));
-          }
-        default:
-          if(is_numeric($input)) {
-            return redirect(route('block', (int) $input));
-          }
-          abort(404);
-          break;
-      }
+        if(preg_match("/^[a-zA-Z0-9]{34}$/",$input)) {
+            return redirect(route('address', $input));
+        }
+        if(preg_match("/^[a-zA-Z0-9]{64}$/",$input)) {
+            return redirect(route('transaction', $input));
+        }
+        if(preg_match("/^[a-zA-Z0-9]{40}$/",$input)) {
+            return redirect(route('claim', $input));
+        }
+        if(preg_match("/^[0-9]{0,10}$/",$input)) {
+            return redirect(route('block', $input));
+        }
+        if(preg_match("/^[0-9A-Za-z \-]{0,100}$/",$input)) {
+            $claims = Claim::where('name', '=', $input)
+                ->orderBy('effective_amount', 'desc')
+                ->simplePaginate(25);
+
+            return view('search_claims', [
+                'claims' => $claims,
+                'query' => $input
+            ]);
+        }
     }
 }

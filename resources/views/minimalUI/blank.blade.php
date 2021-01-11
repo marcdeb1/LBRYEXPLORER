@@ -148,6 +148,12 @@
                                   </a>
                                 </li>
                                 <li class="app-sidebar__heading">Statistics</li>
+                                <li>
+                                    <a href="{{ route('statistics_mining') }}" class="{{ Route::currentRouteName() === 'statistics_mining' ? 'mm-active' : ''  }}">
+                                        <i class="metismenu-icon pe-7s-hammer"></i>
+                                        Mining
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 function getReward(blockHeight) {
-    if (blockHeight == 0) {
+    if (blockHeight === 0) {
         return 400000000;
     }
     else if (blockHeight <= 5100) {
@@ -29,232 +29,135 @@ function withinLevelBounds(reduction, level) {
     }
     reduction += 1;
     return Math.floor((reduction * reduction + reduction) / 2) > level;
-
 }
 
 function getAverageBlockTime(blocks) {
-    const numBlocks = blocks.length;
     const windowSize = 100;
     let sum = 0;
-    for(let i = numBlocks - windowSize; i < numBlocks; i++) {
+    let height = 0;
+    for(let i = blocks.length - windowSize; i < blocks.length; i++) {
         sum += blocks[i].block_time - blocks[i-1].block_time;
+        height += blocks[i].height - blocks[i-1].height + 1;
     }
-    return sum / windowSize;
+    return sum / height;
+}
+
+function getBlockTime(currentHeight, blocks, averageBlockTime) {
+    if(currentHeight < blocks.length) {
+        return blocks[currentHeight].block_time;
+    } else {
+        return (blocks[blocks.length - 1].block_time + ((blocks.length - currentHeight + 1) * averageBlockTime));
+    }
 }
 
 function buildChartData(blockData) {
     let chartData = [];
     let supply = 0;
-    let reward = 0;
     let averageBlockTime = getAverageBlockTime(blockData);
-    let blockTime = 0;
-    let lastBlock = 4071017; // Last block with reward
-    let skip = 100;
     let blocksPerYear = Math.floor((3600*24*365) / averageBlockTime);
-    let historicalSupply = {};
-    let lastYearSupply = 0;
-    let lastYearBlock = 0;
-    let inflationRate = 0;
-    for(let i = 0; i < lastBlock; i++) {
-        reward = getReward(i);
-        supply += reward;
-        historicalSupply[i + 1] = supply;
-        if(i === 0) { // Reward for 1st block set to 0 for scale
-            reward = 0;
+    let lastBlockHeight = 4071017; // Last block with reward
+    let blockTime = 0;
+
+    // Getting historical data
+    for(let i = 0; i < blockData.length; i++) {
+        let newReward = getReward(blockData[i].height);
+        if(i === 0) {
+            supply += newReward;
+            newReward = 0; // Reward for 1st block set to 0 for scale
+        } else if(i === 1) {
+            supply += blockData[i].height - blockData[i - 1].height - 1;
+        } else {
+            let oldReward = getReward(blockData[i - 1].height);
+            supply += (blockData[i].height - blockData[i-1].height) * ((newReward + oldReward) / 2);
         }
-        if(i < blockData.length) {
-            // Historical Data
-            let b = blockData[i];
-            blockTime = b.block_time;
-        }
-        else {
-            // Future blocks
-            skip = 1000;
-            blockTime += averageBlockTime;
-        }
+
+        // Get blockTime from data or from prediction
+        blockTime = getBlockTime(i, blockData, averageBlockTime);
+
         // Inflation Rate
-        if(i + 1 - blocksPerYear <= 0) {
-            lastYearBlock = 1;
+        let inflationRate = 0;
+        if(i !== 0) {
+            inflationRate = (newReward * blocksPerYear * 100) / supply;
         }
-        else {
-            lastYearBlock = i + 1 - blocksPerYear;
-        }
-        lastYearSupply = historicalSupply[lastYearBlock];
-        inflationRate = ((supply - lastYearSupply) / lastYearSupply) * 100;
-        if(i % skip === 0) { // Only push 1/<skip> of all blocks to optimize data loading
+
+        chartData.push({
+            date: new Date(blockTime * 1000),
+            AvailableSupply: supply / 1000000,
+            RewardLBC: newReward,
+            InflationRate: inflationRate,
+            BlockId: blockData[i].height
+        });
+    }
+
+    // Getting historical data
+    for(let j = blockData[blockData.length - 1].height; j < lastBlockHeight; j++) {
+        let skip = 1000;
+        let reward = getReward(j);
+        supply += reward;
+
+        // Get blockTime from data or from prediction
+        blockTime += averageBlockTime;
+
+        // Inflation Rate
+        let newInflationRate = (reward * blocksPerYear * 100) / supply;
+
+        if(j % skip === 0) {
             chartData.push({
                 date: new Date(blockTime * 1000),
-                AvailableSupply: supply,
+                AvailableSupply: supply / 1000000,
                 RewardLBC: reward,
-                InflationRate: inflationRate,
-                BlockId: i + 1
+                InflationRate: newInflationRate,
+                BlockId: j
             });
         }
     }
+
     return chartData;
 }
 
-function loadChartData() {
-    let url = "/api/stats/mining";
-    let loadProgress = $('.mining-inflation-chart-container .load-progress');
-    $.ajax({
-        url: url,
-        type: 'get',
-        dataType: 'json',
-        beforeSend: function() {
-            chartLoadInProgress = true;
-            loadProgress.css({ display: 'block' });
-        },
-        success: function(response) {
-            if(response.success) {
-                chartData = buildChartData(response.data);
-                if(chart) {
-                    chart.dataProvider = chartData;
-                    chart.validateNow();
-                    chart.validateData();
-                }
-            }
-            else {
-                console.log("Could not fetch block data.");
-            }
-        },
-        complete: function() {
-            chartLoadInProgress = false;
-            loadProgress.css({ display: 'none' });
+am4core.ready(function() {
+    let chart = am4core.create("mining-inflation-chart", am4charts.XYChart);
+    chart.colors.step = 3;
+    chart.dataSource.url = "/api/stats/mining";
+    chart.events.on("beforedatavalidated", function(ev) {
+        if(ev.target.data.length > 0 && ev.target.data[0].data !== undefined) {
+            chart.data = buildChartData(ev.target.data[0].data);
         }
     });
-}
-
-let chart;
-let chartData = [];
-let chartLoadInProgress = false;
-AmCharts.ready(function() {
-    chart = AmCharts.makeChart('mining-inflation-chart', {
-        type: 'serial',
-        theme: 'light',
-        mouseWheelZoomEnabled: true,
-        height: '100%',
-        categoryField: 'date',
-        synchronizeGrid: true,
-        dataProvider: chartData,
-        responsive: {
-            enabled: true,
-        },
-        valueAxes: [
-            {
-                id: 'v-supply',
-                axisColor: '#1e88e5',
-                axisThickness: 2,
-                position: 'left',
-                labelFunction: function(value) {
-                    return (Math.round((value / 1000000) * 1000000)/1000000).toFixed(2);
-                }
-            },
-            {
-                id: 'v-reward',
-                axisColor: '#0b7a06',
-                axisThickness: 2,
-                position: 'left',
-                offset: 75,
-            },
-            {
-                id: 'v-inflation-rate',
-                axisColor: '#ff9900',
-                axisThickness: 2,
-                position: 'right',
-                labelFunction: function(value) {
-                    return value.toFixed(2);
-                }
-            },
-        ],
-        categoryAxis: {
-            parseDates: true,
-            autoGridCount: false,
-            minorGridEnabled: true,
-            minorGridAlpha: 0.04,
-            axisColor: '#dadada',
-            twoLineMode: true
-        },
-        graphs: [
-            {
-                id: 'g-supply',
-                valueAxis: 'v-supply', // we have to indicate which value axis should be used
-                title: 'Available supply (millions LBC)',
-                valueField: 'AvailableSupply',
-                bullet: 'round',
-                bulletBorderThickness: 1,
-                bulletBorderAlpha: 1,
-                bulletColor: '#ffffff',
-                bulletSize: 5,
-                useLineColorForBulletBorder: true,
-                lineColor: '#1e88e5',
-                hideBulletsCount: 101,
-                balloonText: '[[AvailableSupply]]',
-                balloonFunction: function(item, graph) {
-                    let result = graph.balloonText;
-                    return result.replace('[[AvailableSupply]]', (Math.round((item.dataContext.AvailableSupply / 1000000) * 1000000)/1000000).toFixed(2));
-                }
-            },
-            {
-                id: 'g-reward',
-                valueAxis: 'v-reward',
-                title: 'Block Reward (LBC)',
-                valueField: 'RewardLBC',
-                bullet: 'round',
-                bulletBorderThickness: 1,
-                bulletBorderAlpha: 1,
-                bulletColor: '#ffffff',
-                bulletSize: 5,
-                useLineColorForBulletBorder: true,
-                lineColor: '#0b7a06',
-                balloonText: '[[RewardLBC]] LBC<br>Block [[BlockId]]',
-                hideBulletsCount: 101
-            },
-            {
-                id: 'g-inflation-rate',
-                valueAxis: 'v-inflation-rate',
-                title: 'Annualized Inflation Rate',
-                valueField: 'InflationRate',
-                bullet: 'round',
-                bulletBorderThickness: 1,
-                bulletBorderAlpha: 1,
-                bulletColor: '#ffffff',
-                bulletSize: 5,
-                useLineColorForBulletBorder: true,
-                lineColor: '#ff9900',
-                balloonText: '[[InflationRate]]%',
-                hideBulletsCount: 101,
-                balloonFunction: function(item, graph) {
-                    let result = graph.balloonText;
-                    return result.replace('[[InflationRate]]', item.dataContext.InflationRate.toFixed(2));
-                }
-            }
-        ],
-        chartCursor: {
-            cursorAlpha: 0.1,
-            fullWidth: true,
-            valueLineBalloonEnabled: true,
-            categoryBalloonColor: '#333333',
-            cursorColor: '#1e88e5'
-        },
-        chartScrollbar: {
-            scrollbarHeight: 36,
-            color: '#888888',
-            gridColor: '#bbbbbb'
-        },
-        legend: {
-            marginLeft: 110,
-            useGraphSettings: true,
-            valueText: "",
-            spacing: 64,
-
-        },
-        export: {
-            enabled: true,
-            fileName: 'lbry-supply-chart',
-            position: 'bottom-right',
-            divId: 'chart-export'
-        }
+    chart.events.on("ready", function(ev){
+        hideIndicator();
     });
-    loadChartData();
+
+
+    // Create axes
+    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+
+    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    let supplySeries = chart.series.push(new am4charts.LineSeries());
+    supplySeries.dataFields.valueY = "AvailableSupply";
+    supplySeries.dataFields.dateX = "date";
+    supplySeries.strokeWidth = 2;
+    supplySeries.yAxis = valueAxis;
+    supplySeries.name = "Available Supply (LBC)";
+    supplySeries.tooltipText = "{valueY} LBC";
+
+    let rewardSeries = chart.series.push(new am4charts.LineSeries());
+    rewardSeries.dataFields.valueY = "RewardLBC";
+    rewardSeries.dataFields.dateX = "date";
+    rewardSeries.strokeWidth = 2;
+    rewardSeries.yAxis = valueAxis;
+    rewardSeries.name = "Block Reward (LBC)";
+    rewardSeries.tooltipText = "{valueY} LBC";
+
+    let inflationSeries = chart.series.push(new am4charts.LineSeries());
+    inflationSeries.dataFields.valueY = "InflationRate";
+    inflationSeries.dataFields.dateX = "date";
+    inflationSeries.strokeWidth = 2;
+    inflationSeries.yAxis = valueAxis;
+    inflationSeries.name = "Annualized Inflation Rate";
+    inflationSeries.tooltipText = "{valueY}%";
+
+    chart.legend = new am4charts.Legend();
+    chart.cursor = new am4charts.XYCursor();
+    chart.exporting.menu = new am4core.ExportMenu();
 });

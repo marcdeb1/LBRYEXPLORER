@@ -28,7 +28,7 @@
         <div class="col-md-3">
           <div class="pt-0 pb-0 card-body">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">
+              <li class="list-group-item px-1">
                 <div class="widget-content p-0">
                   <div class="widget-content-outer">
                     <div class="widget-content-wrapper">
@@ -48,7 +48,7 @@
         <div class="col-md-3">
           <div class="pt-0 pb-0 card-body">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">
+              <li class="list-group-item px-1">
                 <div class="widget-content p-0">
                   <div class="widget-content-outer">
                     <div class="widget-content-wrapper">
@@ -68,7 +68,7 @@
         <div class="col-md-3">
           <div class="pt-0 pb-0 card-body">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">
+              <li class="list-group-item px-1">
                 <div class="widget-content p-0">
                   <div class="widget-content-outer">
                     <div class="widget-content-wrapper">
@@ -88,7 +88,7 @@
         <div class="col-md-3">
           <div class="pt-0 pb-0 card-body">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">
+              <li class="list-group-item px-1">
                 <div class="widget-content p-0">
                   <div class="widget-content-outer">
                     <div class="widget-content-wrapper">
