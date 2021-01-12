@@ -124,20 +124,16 @@ am4core.ready(function() {
             chart.data = buildChartData(ev.target.data[0].data);
         }
     });
-    chart.events.on("ready", function(ev){
-        hideIndicator();
-    });
-
 
     // Create axes
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    let supplyValueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     let supplySeries = chart.series.push(new am4charts.LineSeries());
     supplySeries.dataFields.valueY = "AvailableSupply";
     supplySeries.dataFields.dateX = "date";
     supplySeries.strokeWidth = 2;
-    supplySeries.yAxis = valueAxis;
+    supplySeries.yAxis = supplyValueAxis;
     supplySeries.name = "Available Supply (LBC)";
     supplySeries.tooltipText = "{valueY} LBC";
 
@@ -145,17 +141,19 @@ am4core.ready(function() {
     rewardSeries.dataFields.valueY = "RewardLBC";
     rewardSeries.dataFields.dateX = "date";
     rewardSeries.strokeWidth = 2;
-    rewardSeries.yAxis = valueAxis;
+    rewardSeries.yAxis = supplyValueAxis;
     rewardSeries.name = "Block Reward (LBC)";
     rewardSeries.tooltipText = "{valueY} LBC";
 
+    let inflationValueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     let inflationSeries = chart.series.push(new am4charts.LineSeries());
     inflationSeries.dataFields.valueY = "InflationRate";
     inflationSeries.dataFields.dateX = "date";
     inflationSeries.strokeWidth = 2;
-    inflationSeries.yAxis = valueAxis;
+    inflationSeries.yAxis = inflationValueAxis;
     inflationSeries.name = "Annualized Inflation Rate";
     inflationSeries.tooltipText = "{valueY}%";
+    inflationValueAxis.renderer.opposite = true;
 
     chart.legend = new am4charts.Legend();
     chart.cursor = new am4charts.XYCursor();

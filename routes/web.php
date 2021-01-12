@@ -32,6 +32,7 @@ Route::get('/search', 'SearchController')->where('what', '[A-Za-z0-9]+');
 Route::get('/stats/mining', 'StatisticsController@getMiningStats')->name('statistics_mining');
 
 Route::get('/api/stats/mining', 'APIController@miningStats')->name('api_mining_stats');
+Route::get('/api/stats/blocks/{time_range}', 'APIController@blocksStats')->name('api_blocks_stats');
 
 
 // REDIRECT OLD ROUTES TO NEW ONES
