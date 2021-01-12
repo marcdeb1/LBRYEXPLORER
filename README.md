@@ -1,9 +1,6 @@
 # LBRYexplorer
 A [LBRY](https://lbry.com) block explorer based on Laravel.
 
- > ### :information_source:  Note
- > This project is on early stages of development, it is currently hosted [here](https://spallina.dev). Pease expect bugs and missing pages.
-
 #### Dependencies:
 * [PHP 7.4.11]
 * [Laravel v8.16.1](https://laravel.com/docs/8.x)
