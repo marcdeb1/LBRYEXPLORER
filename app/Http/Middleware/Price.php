@@ -18,7 +18,8 @@ class Price
     function __construct() {
         $this->bittrexApiClient = new Client([
             'base_uri' => $this->bittrexApiUrl,
-            'timeout' => 2.0
+            'timeout' => 2.0,
+            'http_errors' => false
         ]);
     }
 
