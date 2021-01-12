@@ -20,7 +20,7 @@ A [LBRY](https://lbry.com) block explorer based on Laravel.
 #### Run with Docker
 * `docker build -t lbry-explorer .`
 * `docker-compose up`
-* Open your browser at http://localhost:8000
+* Open your browser at http://localhost
 
 #### Database:
 The LBRY Explorer is using [LBRY Chainquery v1.8.1](https://github.com/lbryio/chainquery/releases/tag/v1.8.1) as a remote database.
