@@ -19,6 +19,8 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN curl -sS https://github.com/lbryio/lbrycrd/releases/download/v0.17.3.2/lbrycrd-linux-1732.zip
+
 COPY . /var/www
 RUN chown -R www-data:www-data /var/www
 

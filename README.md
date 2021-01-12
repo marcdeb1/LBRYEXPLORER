@@ -7,7 +7,7 @@ A [LBRY](https://lbry.com) block explorer based on Laravel.
 
 ### Install
 
-* Clone repo and navigate to /src folder
+* `git clone https://github.com/marcdeb1/LBRYEXPLORER.git`
 * Install dependencies with `composer update`
 * Create .env file from .env.example and edit variables according to your environment
 
