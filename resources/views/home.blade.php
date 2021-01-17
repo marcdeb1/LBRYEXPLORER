@@ -49,10 +49,10 @@
             <div class="card mb-3 widget-content bg-premium-dark">
                 <div class="widget-content-wrapper text-white w-100">
                     <div class="widget-content-left">
-                        <div class="widget-heading">Network Hashrate</div>
+                        <div class="widget-heading">New Claims (last 24 hours)</div>
                     </div>
                     <div class="widget-content-right">
-                        <div class="widget-numbers text-white"><span>392766.87 GH/s</span></div>
+                        <div class="widget-numbers text-white"><span>{{ number_format($total_claims) }}</span></div>
                     </div>
                 </div>
             </div>

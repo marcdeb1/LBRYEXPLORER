@@ -29,6 +29,10 @@ class HomeController extends Controller
                                     ->with(['inputs', 'outputs'])
                                     ->get();
 
+        $total_claims = Claim::where('bid_state', '<>', 'Expired')
+            ->where("created_at", ">", Carbon::now()->subDay())
+            ->count();
+
         $claims = Claim::where('bid_state', '<>', 'Expired')
             ->orderBy('id', 'desc')
             ->take(6)
@@ -65,7 +69,8 @@ class HomeController extends Controller
         return view('home', [
           'blocks' => $blocks,
           'transactions' => $transactions,
-          'claims' => $claims
+          'claims' => $claims,
+          'total_claims' => $total_claims
         ]);
     }
 }

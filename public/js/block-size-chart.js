@@ -18,12 +18,6 @@ function buildBlockSizeChartData(data) {
 am4core.ready(function() {
     let blockSizeChart = am4core.create("block-size-chart", am4charts.XYChart);
     blockSizeChart.colors.step = 3;
-    blockSizeChart.dataSource.url = "/api/stats/blocks/24";
-    blockSizeChart.events.on("beforedatavalidated", function(ev) {
-        if(ev.target.data.length > 0 && ev.target.data[0].data !== undefined) {
-            blockSizeChart.data = buildBlockSizeChartData(ev.target.data[0].data);
-        }
-    });
 
     // Create axes
     let dateAxis = blockSizeChart.xAxes.push(new am4charts.DateAxis());
@@ -50,6 +44,14 @@ am4core.ready(function() {
     blockSizeChart.legend = new am4charts.Legend();
     blockSizeChart.cursor = new am4charts.XYCursor();
     blockSizeChart.exporting.menu = new am4core.ExportMenu();
+
+    blockSizeChart.dataSource.url = "/api/stats/blocks/24";
+    blockSizeChart.events.on("beforedatavalidated", function(ev) {
+        if(ev.target.data.length > 0 && ev.target.data[0].data !== undefined) {
+            blockSizeChart.data = buildBlockSizeChartData(ev.target.data[0].data);
+            $(".block-size-chart-box .load-progress").hide();
+        }
+    });
 });
 
 $(document).ready(function() {

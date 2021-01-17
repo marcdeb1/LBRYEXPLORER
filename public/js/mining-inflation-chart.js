@@ -118,12 +118,6 @@ function buildChartData(blockData) {
 am4core.ready(function() {
     let chart = am4core.create("mining-inflation-chart", am4charts.XYChart);
     chart.colors.step = 3;
-    chart.dataSource.url = "/api/stats/mining";
-    chart.events.on("beforedatavalidated", function(ev) {
-        if(ev.target.data.length > 0 && ev.target.data[0].data !== undefined) {
-            chart.data = buildChartData(ev.target.data[0].data);
-        }
-    });
 
     // Create axes
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -158,4 +152,13 @@ am4core.ready(function() {
     chart.legend = new am4charts.Legend();
     chart.cursor = new am4charts.XYCursor();
     chart.exporting.menu = new am4core.ExportMenu();
+
+
+    chart.dataSource.url = "/api/stats/mining";
+    chart.events.on("beforedatavalidated", function(ev) {
+        if(ev.target.data.length > 0 && ev.target.data[0].data !== undefined) {
+            chart.data = buildChartData(ev.target.data[0].data);
+            $(".mining-inflation-chart-box .load-progress").hide();
+        }
+    });
 });
