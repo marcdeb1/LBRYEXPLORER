@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-
-use App\Address;
-use App\TransactionAddress;
+use App\Claim;
 
 
 class StatisticsController extends Controller
@@ -16,15 +12,20 @@ class StatisticsController extends Controller
         ]);
     }
 
-    public function getMiningStatsData() {
-        $blocks = Block::select('height', 'block_time')
-            ->where('confirmations', '>', '0')
-            ->orderBy('height')
+    public function getContentStats() {
+        $top_claims = Claim::select('name', 'effective_amount', 'claim_id')
+            ->where('claim_type', '=', '1')
+            ->take(10)
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $blocks,
+        $top_channels = Claim::select('name', 'effective_amount', 'claim_id')
+            ->where('claim_type', '=', '2')
+            ->take(10)
+            ->get();
+
+        return view('statistics_content', [
+            'top_claims' => $top_claims,
+            'top_channels' => $top_channels
         ]);
     }
 }

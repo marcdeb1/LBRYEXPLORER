@@ -16,7 +16,7 @@
 
 @section('icon', 'pe-7s-rocket')
 @section('title', 'Home')
-@section('title', 'Welcome, this is the LBRY Block Explorer')
+@section('header', 'Welcome, this is the LBRY Block Explorer')
 @section('description', 'LBRY is a secure, open, and community-run digital marketplace.')
 
 @section('content')
@@ -145,7 +145,3 @@
         </div>
     </div>
 @endsection
-
-@push('script')
-    <script src="{{ asset('js/app.js') }}" defer></script>
-@endpush

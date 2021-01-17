@@ -1,13 +1,5 @@
 @extends('minimalUI.blank')
 
-
-@push('script')
-    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-    <script type="text/javascript" src="{{ asset('js/mining-inflation-chart.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/block-size-chart.js') }}"></script>
-@endpush
-
 @push('styles')
     <link href="{{ asset('/css/mining-inflation-chart.css') }}" rel="stylesheet">
 @endpush
@@ -37,5 +29,11 @@
             </div>
         </div>
     </div>
-
 @endsection
+
+@push('script')
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script type="text/javascript" src="{{ asset('js/mining-inflation-chart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/block-size-chart.js') }}"></script>
+@endpush

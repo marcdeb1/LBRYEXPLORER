@@ -134,7 +134,7 @@ am4core.ready(function() {
     supplySeries.dataFields.dateX = "date";
     supplySeries.strokeWidth = 2;
     supplySeries.yAxis = supplyValueAxis;
-    supplySeries.name = "Available Supply (LBC)";
+    supplySeries.name = "Available Supply (millions LBC)";
     supplySeries.tooltipText = "{valueY} LBC";
 
     let rewardSeries = chart.series.push(new am4charts.LineSeries());

@@ -67,7 +67,9 @@
                     </form>
                 </div>
                 <div class="d-flex col-md-6 align-items-end justify-content-end">
-                    @include('components.price_box')
+                    @if (@isset($priceInfo))
+                        @include('components.price_box')
+                    @endif
                 </div>
             </div>
         </div>
@@ -152,6 +154,12 @@
                                     <a href="{{ route('statistics_mining') }}" class="{{ Route::currentRouteName() === 'statistics_mining' ? 'mm-active' : ''  }}">
                                         <i class="metismenu-icon pe-7s-hammer"></i>
                                         Mining
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('statistics_content') }}" class="{{ Route::currentRouteName() === 'statistics_content' ? 'mm-active' : ''  }}">
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Content
                                     </a>
                                 </li>
                             </ul>
